@@ -3,7 +3,7 @@ import { Globe, ArrowRight } from 'lucide-react'
 
 export function PublicNav() {
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5 group">
@@ -21,15 +21,24 @@ export function PublicNav() {
         </Link>
 
         {/* Links */}
-        <nav className="hidden items-center gap-8 md:flex">
-          <Link href="/courses" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">
-            Courses & CEFR
+        <nav className="hidden items-center gap-6 lg:flex">
+          <Link href="/courses" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
+            Courses
           </Link>
-          <Link href="/#methodology" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">
-            Methodology
+          <Link href="/about" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
+            About & Pedagogy
           </Link>
-          <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">
-            Contact & Location
+          <Link href="/fees" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
+            Fees & Tuition
+          </Link>
+          <Link href="/success-stories" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
+            Success Stories
+          </Link>
+          <Link href="/faq" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
+            FAQ
+          </Link>
+          <Link href="/contact" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
+            Contact Us
           </Link>
         </nav>
 
@@ -37,15 +46,15 @@ export function PublicNav() {
         <div className="flex items-center gap-3">
           <Link
             href="/login"
-            className="rounded-xl px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+            className="rounded-xl px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-colors"
           >
             Sign In
           </Link>
           <Link
             href="/courses"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition-colors"
           >
-            Explore Programs <ArrowRight className="h-4 w-4" />
+            Explore Programs <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>

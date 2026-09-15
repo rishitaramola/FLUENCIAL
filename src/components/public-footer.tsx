@@ -15,41 +15,34 @@ export function PublicFooter() {
               <span className="text-lg font-bold text-white">Fluenciel</span>
             </div>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Premium French & German immersion language studio. CEFR aligned training, DELF/GOETHE exam prep, and live speaking labs.
+              Premiere French & European language studio. CEFR aligned training, DELF/GOETHE exam prep, and live speaking labs.
             </p>
           </div>
 
-          {/* Quick Navigation */}
+          {/* Programs */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Programs</h4>
+            <h4 className="text-sm font-semibold text-white">Programs & Pathways</h4>
             <ul className="space-y-2 text-xs text-gray-400">
-              <li><Link href="/courses" className="hover:text-white transition-colors">French A1–B2 Diplomas</Link></li>
-              <li><Link href="/courses" className="hover:text-white transition-colors">German A1–B2 Zertifikat</Link></li>
+              <li><Link href="/courses" className="hover:text-white transition-colors">Study in France Pathway</Link></li>
+              <li><Link href="/courses" className="hover:text-white transition-colors">DELF / TEF Exam Preparation</Link></li>
+              <li><Link href="/courses" className="hover:text-white transition-colors">Professional Business French</Link></li>
               <li><Link href="/courses" className="hover:text-white transition-colors">Conversational Speaking Labs</Link></li>
-              <li><Link href="/courses" className="hover:text-white transition-colors">Mock Exam Diagnostics</Link></li>
             </ul>
           </div>
 
-          {/* Contact Details */}
+          {/* Quick Links & Legal */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Contact Us</h4>
+            <h4 className="text-sm font-semibold text-white">Company & Legal</h4>
             <ul className="space-y-2 text-xs text-gray-400">
-              <li className="flex items-center gap-2">
-                <Mail className="h-3.5 w-3.5 text-indigo-400" />
-                <span>contact@fluenciel.com</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="h-3.5 w-3.5 text-indigo-400" />
-                <span>+91 98765 43210</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 text-indigo-400" />
-                <span>Language Studio, Connaught Place, New Delhi</span>
-              </li>
+              <li><Link href="/about" className="hover:text-white transition-colors">About & Pedagogy</Link></li>
+              <li><Link href="/fees" className="hover:text-white transition-colors">Fees & Installments</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link></li>
+              <li><Link href="/refund-policy" className="hover:text-white transition-colors">Refund & Cancellation</Link></li>
             </ul>
           </div>
 
-          {/* WhatsApp / Social */}
+          {/* WhatsApp Direct */}
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Direct Connect</h4>
             <p className="text-xs text-gray-400">Speak directly with an academic counselor on WhatsApp.</p>
@@ -57,7 +50,7 @@ export function PublicFooter() {
               href="https://wa.me/919876543210?text=Hi!%20I%20am%20interested%20in%20learning%20more%20about%20Fluenciel%20language%20courses."
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-emerald-500 transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-emerald-500 transition-colors shadow-xs"
             >
               <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
             </a>

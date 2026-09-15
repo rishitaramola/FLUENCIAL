@@ -1,5 +1,5 @@
 ﻿// =============================================================================
-// Database types — hand-authored to match migrations 0000 + 0001 + 0004
+// Database types — hand-authored to match migrations 0000 through 0005
 // Regenerate with `supabase gen types typescript` once Supabase CLI is set up.
 // =============================================================================
 
@@ -448,6 +448,354 @@ export type Database = {
         }
         Relationships: []
       }
+      batches: {
+        Row: {
+          id: string
+          course_id: string | null
+          batch_name: string
+          start_date: string
+          end_date: string | null
+          schedule_text: string
+          capacity: number
+          enrolled_count: number
+          teacher_id: string | null
+          status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          course_id?: string | null
+          batch_name: string
+          start_date: string
+          end_date?: string | null
+          schedule_text: string
+          capacity?: number
+          enrolled_count?: number
+          teacher_id?: string | null
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          course_id?: string | null
+          batch_name?: string
+          start_date?: string
+          end_date?: string | null
+          schedule_text?: string
+          capacity?: number
+          enrolled_count?: number
+          teacher_id?: string | null
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'batches_course_id_fkey'
+            columns: ['course_id']
+            isOneToOne: false
+            referencedRelation: 'courses'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'batches_teacher_id_fkey'
+            columns: ['teacher_id']
+            isOneToOne: false
+            referencedRelation: 'teachers'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      enrollments: {
+        Row: {
+          id: string
+          student_id: string | null
+          course_id: string | null
+          batch_id: string | null
+          teacher_id: string | null
+          amount_paid: number
+          balance: number
+          status: string
+          enrollment_date: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          student_id?: string | null
+          course_id?: string | null
+          batch_id?: string | null
+          teacher_id?: string | null
+          amount_paid?: number
+          balance?: number
+          status?: string
+          enrollment_date?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          student_id?: string | null
+          course_id?: string | null
+          batch_id?: string | null
+          teacher_id?: string | null
+          amount_paid?: number
+          balance?: number
+          status?: string
+          enrollment_date?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'enrollments_student_id_fkey'
+            columns: ['student_id']
+            isOneToOne: false
+            referencedRelation: 'students'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'enrollments_course_id_fkey'
+            columns: ['course_id']
+            isOneToOne: false
+            referencedRelation: 'courses'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'enrollments_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      demo_bookings: {
+        Row: {
+          id: string
+          full_name: string
+          email: string
+          phone: string | null
+          current_level: string | null
+          purpose: string | null
+          preferred_date: string | null
+          preferred_time: string | null
+          status: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          full_name: string
+          email: string
+          phone?: string | null
+          current_level?: string | null
+          purpose?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          status?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          full_name?: string
+          email?: string
+          phone?: string | null
+          current_level?: string | null
+          purpose?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          status?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      trainers: {
+        Row: {
+          id: string
+          name: string
+          role: string
+          bio: string
+          qualifications: string
+          specialization: string
+          languages: string
+          avatar_url: string | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          display_order: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          role: string
+          bio: string
+          qualifications: string
+          specialization: string
+          languages?: string
+          avatar_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          display_order?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          role?: string
+          bio?: string
+          qualifications?: string
+          specialization?: string
+          languages?: string
+          avatar_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          display_order?: number | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      attendance: {
+        Row: {
+          id: string
+          student_id: string | null
+          batch_id: string | null
+          date: string
+          status: AttendanceStatus
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          student_id?: string | null
+          batch_id?: string | null
+          date?: string
+          status?: AttendanceStatus
+          notes?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          student_id?: string | null
+          batch_id?: string | null
+          date?: string
+          status?: AttendanceStatus
+          notes?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'attendance_student_id_fkey'
+            columns: ['student_id']
+            isOneToOne: false
+            referencedRelation: 'students'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'attendance_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      progress: {
+        Row: {
+          id: string
+          student_id: string | null
+          course_id: string | null
+          speaking_score: number | null
+          listening_score: number | null
+          reading_score: number | null
+          writing_score: number | null
+          grammar_score: number | null
+          vocabulary_score: number | null
+          mock_exam_score: number | null
+          evaluated_by: string | null
+          evaluated_at: string
+        }
+        Insert: {
+          id?: string
+          student_id?: string | null
+          course_id?: string | null
+          speaking_score?: number | null
+          listening_score?: number | null
+          reading_score?: number | null
+          writing_score?: number | null
+          grammar_score?: number | null
+          vocabulary_score?: number | null
+          mock_exam_score?: number | null
+          evaluated_by?: string | null
+          evaluated_at?: string
+        }
+        Update: {
+          id?: string
+          student_id?: string | null
+          course_id?: string | null
+          speaking_score?: number | null
+          listening_score?: number | null
+          reading_score?: number | null
+          writing_score?: number | null
+          grammar_score?: number | null
+          vocabulary_score?: number | null
+          mock_exam_score?: number | null
+          evaluated_by?: string | null
+          evaluated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'progress_student_id_fkey'
+            columns: ['student_id']
+            isOneToOne: false
+            referencedRelation: 'students'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'progress_course_id_fkey'
+            columns: ['course_id']
+            isOneToOne: false
+            referencedRelation: 'courses'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      brochures: {
+        Row: {
+          id: string
+          title: string
+          course_id: string | null
+          file_url: string
+          is_active: boolean | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          course_id?: string | null
+          file_url: string
+          is_active?: boolean | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          course_id?: string | null
+          file_url?: string
+          is_active?: boolean | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'brochures_course_id_fkey'
+            columns: ['course_id']
+            isOneToOne: false
+            referencedRelation: 'courses'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -476,8 +824,6 @@ export type Database = {
     }
   }
 }
-
-// ─── Convenience row/insert/update helpers ────────────────────────────────────
 
 export type Tables<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Row']
