@@ -1,5 +1,5 @@
 ﻿// =============================================================================
-// Database types — hand-authored to match migrations 0000 + 0001
+// Database types — hand-authored to match migrations 0000 + 0001 + 0004
 // Regenerate with `supabase gen types typescript` once Supabase CLI is set up.
 // =============================================================================
 
@@ -375,6 +375,78 @@ export type Database = {
             referencedColumns: ['razorpay_event_id']
           },
         ]
+      }
+      faqs: {
+        Row: {
+          id: string
+          question: string
+          answer: string
+          category: string | null
+          display_order: number | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          question: string
+          answer: string
+          category?: string | null
+          display_order?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          question?: string
+          answer?: string
+          category?: string | null
+          display_order?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      success_stories: {
+        Row: {
+          id: string
+          student_name: string
+          course_name: string
+          score_achievement: string
+          testimonial_text: string
+          video_url: string | null
+          avatar_url: string | null
+          is_featured: boolean | null
+          display_order: number | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          student_name: string
+          course_name: string
+          score_achievement: string
+          testimonial_text: string
+          video_url?: string | null
+          avatar_url?: string | null
+          is_featured?: boolean | null
+          display_order?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          student_name?: string
+          course_name?: string
+          score_achievement?: string
+          testimonial_text?: string
+          video_url?: string | null
+          avatar_url?: string | null
+          is_featured?: boolean | null
+          display_order?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {
