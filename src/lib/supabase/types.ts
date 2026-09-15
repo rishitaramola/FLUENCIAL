@@ -1,0 +1,420 @@
+﻿// =============================================================================
+// Database types — hand-authored to match migrations 0000 + 0001
+// Regenerate with `supabase gen types typescript` once Supabase CLI is set up.
+// =============================================================================
+
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+export type AppRole = 'ADMIN' | 'TEACHER' | 'STUDENT'
+export type CourseStatus = 'draft' | 'published' | 'archived'
+export type LeadStatus =
+  | 'NEW'
+  | 'CONTACTED'
+  | 'FOLLOW_UP'
+  | 'INTERESTED'
+  | 'REGISTERED'
+  | 'CONVERTED'
+  | 'CLOSED'
+export type StudentStatus = 'LEAD' | 'ENROLLED' | 'ACTIVE' | 'COMPLETED' | 'INACTIVE'
+export type PaymentStatus = 'CREATED' | 'PENDING' | 'SUCCESS' | 'FAILED' | 'REFUNDED'
+export type AttendanceStatus = 'PRESENT' | 'ABSENT' | 'LATE'
+export type Skill =
+  | 'SPEAKING'
+  | 'LISTENING'
+  | 'READING'
+  | 'WRITING'
+  | 'GRAMMAR'
+  | 'VOCABULARY'
+  | 'PRONUNCIATION'
+  | 'MOCK_EXAM'
+
+// ─── Database ─────────────────────────────────────────────────────────────────
+
+export type Database = {
+  public: {
+    Tables: {
+      profiles: {
+        Row: {
+          id: string
+          role: AppRole
+          full_name: string | null
+          phone: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          role?: AppRole
+          full_name?: string | null
+          phone?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          role?: AppRole
+          full_name?: string | null
+          phone?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          user_id: string
+          role: AppRole
+        }
+        Insert: {
+          user_id: string
+          role?: AppRole
+        }
+        Update: {
+          user_id?: string
+          role?: AppRole
+        }
+        Relationships: []
+      }
+      role_permissions: {
+        Row: {
+          id: string
+          role: AppRole
+          permission: string
+        }
+        Insert: {
+          id?: string
+          role: AppRole
+          permission: string
+        }
+        Update: {
+          id?: string
+          role?: AppRole
+          permission?: string
+        }
+        Relationships: []
+      }
+      courses: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          level: string
+          short_description: string
+          description: string
+          syllabus: Json
+          duration: string
+          mode: string
+          batch_size: number
+          start_date: string | null
+          fee: number
+          registration_fee: number
+          installment_available: boolean
+          material_included: boolean
+          mock_tests: number
+          speaking_practice: boolean
+          brochure_url: string | null
+          status: CourseStatus
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug: string
+          level: string
+          short_description: string
+          description: string
+          syllabus?: Json
+          duration: string
+          mode: string
+          batch_size: number
+          start_date?: string | null
+          fee: number
+          registration_fee: number
+          installment_available?: boolean
+          material_included?: boolean
+          mock_tests?: number
+          speaking_practice?: boolean
+          brochure_url?: string | null
+          status?: CourseStatus
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string
+          level?: string
+          short_description?: string
+          description?: string
+          syllabus?: Json
+          duration?: string
+          mode?: string
+          batch_size?: number
+          start_date?: string | null
+          fee?: number
+          registration_fee?: number
+          installment_available?: boolean
+          material_included?: boolean
+          mock_tests?: number
+          speaking_practice?: boolean
+          brochure_url?: string | null
+          status?: CourseStatus
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      teachers: {
+        Row: {
+          id: string
+          bio: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          bio?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          bio?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'teachers_id_fkey'
+            columns: ['id']
+            isOneToOne: true
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      students: {
+        Row: {
+          id: string
+          teacher_id: string | null
+          status: StudentStatus
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          teacher_id?: string | null
+          status?: StudentStatus
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          teacher_id?: string | null
+          status?: StudentStatus
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'students_id_fkey'
+            columns: ['id']
+            isOneToOne: true
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'students_teacher_id_fkey'
+            columns: ['teacher_id']
+            isOneToOne: false
+            referencedRelation: 'teachers'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          phone: string | null
+          course_id: string | null
+          status: LeadStatus
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          phone?: string | null
+          course_id?: string | null
+          status?: LeadStatus
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          email?: string
+          phone?: string | null
+          course_id?: string | null
+          status?: LeadStatus
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'leads_course_id_fkey'
+            columns: ['course_id']
+            isOneToOne: false
+            referencedRelation: 'courses'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      webhook_events: {
+        Row: {
+          id: string
+          razorpay_event_id: string
+          event_type: string
+          payload: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          razorpay_event_id: string
+          event_type: string
+          payload: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          razorpay_event_id?: string
+          event_type?: string
+          payload?: Json
+          created_at?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          id: string
+          order_id: string
+          payment_id: string | null
+          student_id: string | null
+          course_id: string | null
+          amount_paise: number
+          currency: string
+          status: PaymentStatus
+          method: string | null
+          razorpay_event_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          payment_id?: string | null
+          student_id?: string | null
+          course_id?: string | null
+          amount_paise: number
+          currency?: string
+          status?: PaymentStatus
+          method?: string | null
+          razorpay_event_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          payment_id?: string | null
+          student_id?: string | null
+          course_id?: string | null
+          amount_paise?: number
+          currency?: string
+          status?: PaymentStatus
+          method?: string | null
+          razorpay_event_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'payments_student_id_fkey'
+            columns: ['student_id']
+            isOneToOne: false
+            referencedRelation: 'students'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'payments_course_id_fkey'
+            columns: ['course_id']
+            isOneToOne: false
+            referencedRelation: 'courses'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'payments_razorpay_event_id_fkey'
+            columns: ['razorpay_event_id']
+            isOneToOne: false
+            referencedRelation: 'webhook_events'
+            referencedColumns: ['razorpay_event_id']
+          },
+        ]
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      authorize: {
+        Args: { requested_permission: string }
+        Returns: boolean
+      }
+      custom_access_token_hook: {
+        Args: { event: Json }
+        Returns: Json
+      }
+    }
+    Enums: {
+      app_role: AppRole
+      course_status: CourseStatus
+      lead_status: LeadStatus
+      student_status: StudentStatus
+      payment_status: PaymentStatus
+      attendance_status: AttendanceStatus
+      skill: Skill
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+// ─── Convenience row/insert/update helpers ────────────────────────────────────
+
+export type Tables<T extends keyof Database['public']['Tables']> =
+  Database['public']['Tables'][T]['Row']
+
+export type TablesInsert<T extends keyof Database['public']['Tables']> =
+  Database['public']['Tables'][T]['Insert']
+
+export type TablesUpdate<T extends keyof Database['public']['Tables']> =
+  Database['public']['Tables'][T]['Update']
+
+export type Enums<T extends keyof Database['public']['Enums']> =
+  Database['public']['Enums'][T]
