@@ -2,7 +2,12 @@
 import Link from 'next/link'
 import { PublicNav } from '@/components/public-nav'
 import { PublicFooter } from '@/components/public-footer'
+import { EuropeMapBg } from '@/components/europe-map-bg'
+import { FAQSection } from '@/components/faq-section'
+import { SuccessStoriesSection } from '@/components/success-stories-section'
 import { getPublishedCourses } from '@/lib/data/courses'
+import { getAllFaqs } from '@/lib/data/faqs'
+import { getSuccessStories } from '@/lib/data/testimonials'
 import { submitLeadAction } from '@/app/actions/leads'
 import {
   Globe,
@@ -15,7 +20,8 @@ import {
   Sparkles,
   ShieldCheck,
   Star,
-  Clock
+  Clock,
+  Video
 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -24,19 +30,25 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
-  const courses = await getPublishedCourses()
+  const [courses, faqs, stories] = await Promise.all([
+    getPublishedCourses(),
+    getAllFaqs(),
+    getSuccessStories(),
+  ])
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <PublicNav />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-indigo-50/50 via-white to-white py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Hero Section with European Map Vector Background Overlay */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-indigo-50/70 via-white to-white py-20 lg:py-28">
+        <EuropeMapBg />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
             {/* Hero Left Content */}
             <div className="space-y-6 text-center sm:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3.5 py-1.5 text-xs font-semibold text-indigo-700 shadow-xs">
+              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50/90 px-3.5 py-1.5 text-xs font-semibold text-indigo-700 shadow-xs backdrop-blur-xs">
                 <Sparkles className="h-3.5 w-3.5 text-indigo-600" />
                 <span>Admissions Open for New CEFR Cohorts</span>
               </div>
@@ -80,7 +92,7 @@ export default async function HomePage() {
 
             {/* Hero Right Visual Card */}
             <div className="relative">
-              <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-2xl space-y-6 relative z-10">
+              <div className="rounded-2xl border border-gray-200 bg-white/95 p-8 shadow-2xl space-y-6 relative z-10 backdrop-blur-xs">
                 <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Featured Cohort</span>
@@ -119,58 +131,6 @@ export default async function HomePage() {
                   </Link>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Value Propositions / Methodology */}
-      <section id="methodology" className="py-20 bg-gray-50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <h2 className="text-3xl font-bold text-gray-900">Why Learners Choose Fluenciel Studio</h2>
-            <p className="text-sm text-gray-600">Our structured pedagogical methodology transforms passive vocabulary into active conversational fluency.</p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-200 space-y-3">
-              <div className="rounded-lg bg-indigo-50 p-3 text-indigo-600 w-fit">
-                <Globe className="h-6 w-6" />
-              </div>
-              <h3 className="font-bold text-gray-900 text-base">CEFR Standards</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Strict alignment with European Common Framework levels A1 through C2 for global academic and visa validity.
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-200 space-y-3">
-              <div className="rounded-lg bg-purple-50 p-3 text-purple-600 w-fit">
-                <Users className="h-6 w-6" />
-              </div>
-              <h3 className="font-bold text-gray-900 text-base">Micro Batches</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Strictly capped at 8–10 students per batch to ensure maximum direct speaking time with instructors.
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-200 space-y-3">
-              <div className="rounded-lg bg-emerald-50 p-3 text-emerald-600 w-fit">
-                <Award className="h-6 w-6" />
-              </div>
-              <h3 className="font-bold text-gray-900 text-base">Exam Guarantee</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Includes full DELF / TCF / GOETHE mock tests with detailed oral score feedback.
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-200 space-y-3">
-              <div className="rounded-lg bg-amber-50 p-3 text-amber-600 w-fit">
-                <MessageSquare className="h-6 w-6" />
-              </div>
-              <h3 className="font-bold text-gray-900 text-base">Interactive Labs</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Daily conversational laboratories focusing on real-world dialogue, accent neutralization, and listening.
-              </p>
             </div>
           </div>
         </div>
@@ -239,9 +199,35 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Lead Inquiry Intake Form Section */}
-      <section id="lead-form" className="py-20 bg-gradient-to-br from-indigo-900 to-purple-900 text-white">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+      {/* Success Stories & Video Testimonials */}
+      <section className="py-20 bg-gray-50 border-t border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Student Reviews</span>
+            <h2 className="text-3xl font-bold text-gray-900">Success Stories & DELF/GOETHE Achievers</h2>
+            <p className="text-sm text-gray-600">Hear directly from our students who cleared their CEFR exams and secured university admissions & visa clearances.</p>
+          </div>
+
+          <SuccessStoriesSection stories={stories} />
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-white border-t border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Got Questions?</span>
+            <h2 className="text-3xl font-bold text-gray-900">Frequently Asked Questions</h2>
+            <p className="text-sm text-gray-600">Everything you need to know about our courses, certifications, batch timings, and online payment options.</p>
+          </div>
+
+          <FAQSection faqs={faqs} />
+        </div>
+      </section>
+
+      {/* Book a Demo Lead Intake Form */}
+      <section id="lead-form" className="py-20 bg-gradient-to-br from-indigo-900 via-indigo-800 to-purple-900 text-white relative">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8 relative z-10">
           <div className="text-center space-y-3">
             <h2 className="text-3xl font-bold">Book a Free 1-on-1 Academic Consultation</h2>
             <p className="text-sm text-indigo-200">
