@@ -1,7 +1,6 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { PublicNav } from '@/components/public-nav'
-import { PublicFooter } from '@/components/public-footer'
+import { PublicShell } from '@/components/public-shell'
 import { getPublishedCourses } from '@/lib/data/courses'
 import { CheckCircle2, ArrowRight, ShieldCheck, CreditCard } from 'lucide-react'
 
@@ -14,11 +13,9 @@ export default async function FeesPage() {
   const courses = await getPublishedCourses()
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <PublicNav />
-
+    <PublicShell>
       {/* Header Banner */}
-      <section className="bg-gray-50 border-b border-gray-100 py-16">
+      <section className="bg-white/80 backdrop-blur-sm border-b border-gray-200 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
             Transparent Pricing
@@ -39,7 +36,7 @@ export default async function FeesPage() {
             {courses.map((course) => (
               <div
                 key={course.id}
-                className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm flex flex-col justify-between hover:border-indigo-600 hover:shadow-md transition-all"
+                className="rounded-3xl border border-gray-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm flex flex-col justify-between hover:border-indigo-400 hover:shadow-md transition-all"
               >
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
@@ -54,7 +51,7 @@ export default async function FeesPage() {
                     <p className="text-xs text-gray-500 mt-1">{course.duration} · Max {course.batch_size} students</p>
                   </div>
 
-                  <div className="border-t border-b border-gray-100 py-4 space-y-1">
+                  <div className="border-t border-b border-gray-200 py-4 space-y-1">
                     <div className="text-3xl font-extrabold text-gray-900">
                       ₹{course.fee.toLocaleString('en-IN')}{' '}
                       <span className="text-xs font-normal text-gray-500">INR</span>
@@ -100,8 +97,6 @@ export default async function FeesPage() {
           </div>
         </div>
       </section>
-
-      <PublicFooter />
-    </div>
+    </PublicShell>
   )
 }

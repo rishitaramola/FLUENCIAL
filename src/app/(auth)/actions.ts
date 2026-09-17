@@ -18,9 +18,8 @@ export async function login(formData: FormData) {
 
   revalidatePath('/', 'layout')
 
-  // Honor redirectTo so middleware-initiated redirects land back on the right page
-  const redirectTo = (formData.get('redirectTo') as string | null) ?? '/dashboard'
-  redirect(redirectTo)
+  const { safeInternalPath } = await import('@/lib/auth')
+  redirect(safeInternalPath(formData.get('redirectTo') as string | null))
 }
 
 export async function register(formData: FormData) {

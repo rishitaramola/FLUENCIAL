@@ -1,19 +1,31 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { createLead } from '@/lib/data/leads'
+import { notifyLeadSubmitted } from '@/lib/email'
 
-export async function submitLeadAction(formData: FormData): Promise<void> {
-  const name = (formData.get('name') as string)?.trim()
-  const email = (formData.get('email') as string)?.trim().toLowerCase()
-  const phone = (formData.get('phone') as string)?.trim() || null
-  const courseId = (formData.get('courseId') as string) || null
-  const notes = (formData.get('notes') as string)?.trim() || null
+export type EnquiryState = { ok: boolean; error: string; message: string }
 
-  if (!name || !email) {
-    redirect('/contact?error=Name+and+email+are+required')
+function isEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
+
+export async function submitEnquiry(_prev: EnquiryState, formData: FormData): Promise<EnquiryState> {
+  if (String(formData.get('company') || '').trim()) {
+    return { ok: true, error: '', message: 'Thank you. We will be in touch if needed.' }
   }
+
+  const name = String(formData.get('name') || '').trim()
+  const email = String(formData.get('email') || '').trim().toLowerCase()
+  const phone = String(formData.get('phone') || '').trim() || null
+  const courseId = String(formData.get('courseId') || '').trim() || null
+  const currentLevel = String(formData.get('currentLevel') || '').trim() || null
+  const goal = String(formData.get('goal') || '').trim() || null
+  const preferredTiming = String(formData.get('preferredTiming') || '').trim() || null
+  const preferredMode = String(formData.get('preferredMode') || '').trim() || null
+  const message = String(formData.get('message') || '').trim() || null
+
+  if (name.length < 2) return { ok: false, error: 'Please enter your full name.', message: '' }
+  if (!isEmail(email)) return { ok: false, error: 'Please enter a valid email address.', message: '' }
 
   try {
     await createLead({
@@ -21,15 +33,26 @@ export async function submitLeadAction(formData: FormData): Promise<void> {
       email,
       phone,
       course_id: courseId,
-      notes,
+      current_level: currentLevel,
+      goal,
+      preferred_timing: preferredTiming,
+      preferred_mode: preferredMode,
+      notes: message,
       status: 'NEW',
     })
-
-    revalidatePath('/dashboard/admin/leads')
-  } catch (error: any) {
+    await notifyLeadSubmitted({ name, email, phone })
+    return {
+      ok: true,
+      error: '',
+      message: 'Thank you. Your enquiry has been received. We will respond with current demo and course details.',
+    }
+  } catch (error) {
     console.error('Lead submission error:', error)
-    redirect('/contact?error=Failed+to+submit+inquiry')
+    return { ok: false, error: 'We could not save your enquiry just now. Please try again.', message: '' }
   }
+}
 
-  redirect('/contact?message=Thank+you!+Our+academic+counselor+will+reach+out+shortly.')
+/** @deprecated kept for any remaining form actions */
+export async function submitLeadAction(formData: FormData) {
+  await submitEnquiry({ ok: false, error: '', message: '' }, formData)
 }

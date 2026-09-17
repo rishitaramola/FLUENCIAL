@@ -2,8 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Script from 'next/script'
-import { PublicNav } from '@/components/public-nav'
-import { PublicFooter } from '@/components/public-footer'
+import { PublicShell } from '@/components/public-shell'
 import { getCourseBySlug } from '@/lib/data/courses'
 import { CheckoutButton } from './checkout-button'
 import {
@@ -39,9 +38,8 @@ export default async function CourseDetailPage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <PublicShell>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
-      <PublicNav />
 
       {/* Header Banner */}
       <section className="bg-gray-900 text-white py-16">
@@ -74,7 +72,7 @@ export default async function CourseDetailPage({ params }: Props) {
             {/* Left Content (Syllabus & Features) */}
             <div className="lg:col-span-2 space-y-10">
               {/* Program Features */}
-              <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm space-y-6">
+              <div className="rounded-3xl border border-gray-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm space-y-6">
                 <h2 className="text-xl font-bold text-gray-900">What&apos;s Included in this Program</h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="flex items-start gap-3">
@@ -114,12 +112,12 @@ export default async function CourseDetailPage({ params }: Props) {
               </div>
 
               {/* Syllabus Outline */}
-              <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm space-y-6">
+              <div className="rounded-3xl border border-gray-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm space-y-6">
                 <h2 className="text-xl font-bold text-gray-900">Curriculum & Syllabus Breakdown</h2>
                 {syllabusList.length > 0 ? (
                   <div className="space-y-4">
                     {syllabusList.map((module, idx) => (
-                      <div key={idx} className="rounded-xl border border-gray-100 bg-gray-50/50 p-4 space-y-2">
+                      <div key={idx} className="rounded-xl border border-gray-100 bg-white/60 p-4 space-y-2">
                         <h4 className="font-semibold text-gray-900 text-sm">{module.title || `Module ${idx + 1}`}</h4>
                         {Array.isArray(module.topics) && (
                           <ul className="space-y-1 text-xs text-gray-600 list-disc list-inside">
@@ -133,10 +131,10 @@ export default async function CourseDetailPage({ params }: Props) {
                   </div>
                 ) : (
                   <div className="text-sm text-gray-500 leading-relaxed space-y-2">
-                    <p>� Phonetics, pronunciation mechanics, and basic syntax.</p>
-                    <p>� Conversational dialogues: greetings, travel, professional scenarios.</p>
-                    <p>� Grammar modules: tenses, subjunctive moods, prepositions, articles.</p>
-                    <p>� Listening comprehension exercises and dictation tests.</p>
+                    <p>• Phonetics, pronunciation mechanics, and basic syntax.</p>
+                    <p>• Conversational dialogues: greetings, travel, professional scenarios.</p>
+                    <p>• Grammar modules: tenses, subjunctive moods, prepositions, articles.</p>
+                    <p>• Listening comprehension exercises and dictation tests.</p>
                   </div>
                 )}
               </div>
@@ -144,35 +142,35 @@ export default async function CourseDetailPage({ params }: Props) {
 
             {/* Right Sidebar Enrollment Card */}
             <div className="space-y-6">
-              <div className="sticky top-28 rounded-2xl border border-gray-200 bg-white p-6 shadow-xl space-y-6">
-                <div className="space-y-2 border-b border-gray-100 pb-4">
+              <div className="sticky top-28 rounded-3xl border border-gray-200 bg-white/80 backdrop-blur-sm p-6 shadow-xl space-y-6">
+                <div className="space-y-2 border-b border-gray-200 pb-4">
                   <span className="text-xs text-gray-400">Total Course Fee</span>
                   <div className="text-3xl font-extrabold text-gray-900">
-                    ?{course.fee.toLocaleString('en-IN')}{' '}
+                    ₹{course.fee.toLocaleString('en-IN')}{' '}
                     <span className="text-xs font-medium text-gray-500">INR</span>
                   </div>
                   {course.registration_fee > 0 && (
                     <p className="text-xs text-gray-500">
-                      + ?{course.registration_fee.toLocaleString('en-IN')} one-time registration fee
+                      + ₹{course.registration_fee.toLocaleString('en-IN')} one-time registration fee
                     </p>
                   )}
                 </div>
 
                 <div className="space-y-3 text-xs text-gray-600">
-                  <div className="flex justify-between py-1 border-b border-gray-50">
+                  <div className="flex justify-between py-1 border-b border-gray-100">
                     <span>Duration:</span>
                     <span className="font-semibold text-gray-900">{course.duration}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-gray-50">
+                  <div className="flex justify-between py-1 border-b border-gray-100">
                     <span>Learning Mode:</span>
                     <span className="font-semibold text-gray-900 capitalize">{course.mode}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-gray-50">
+                  <div className="flex justify-between py-1 border-b border-gray-100">
                     <span>Batch Capacity:</span>
                     <span className="font-semibold text-gray-900">{course.batch_size} students</span>
                   </div>
                   {course.start_date && (
-                    <div className="flex justify-between py-1 border-b border-gray-50">
+                    <div className="flex justify-between py-1 border-b border-gray-100">
                       <span>Cohort Starts:</span>
                       <span className="font-semibold text-gray-900">
                         {new Date(course.start_date).toLocaleDateString()}
@@ -196,8 +194,6 @@ export default async function CourseDetailPage({ params }: Props) {
           </div>
         </div>
       </section>
-
-      <PublicFooter />
-    </div>
+    </PublicShell>
   )
 }

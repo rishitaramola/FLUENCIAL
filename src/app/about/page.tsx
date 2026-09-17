@@ -1,7 +1,6 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { PublicNav } from '@/components/public-nav'
-import { PublicFooter } from '@/components/public-footer'
+import { PublicShell } from '@/components/public-shell'
 import { getPublishedTrainers } from '@/lib/data/trainers'
 import { Globe, Award, Users, BookOpen, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react'
 
@@ -14,9 +13,7 @@ export default async function AboutPage() {
   const trainers = await getPublishedTrainers()
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <PublicNav />
-
+    <PublicShell>
       {/* Header Banner */}
       <section className="bg-gray-900 text-white py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
@@ -33,7 +30,7 @@ export default async function AboutPage() {
       </section>
 
       {/* The Fluenciel Method */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white/80 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Pedagogical Framework</span>
@@ -48,7 +45,7 @@ export default async function AboutPage() {
               { step: '04', title: 'Practise', desc: 'Written corrections & audio dictation drills.' },
               { step: '05', title: 'Progress', desc: 'DELF/GOETHE mock diagnostic evaluations.' },
             ].map((m) => (
-              <div key={m.step} className="rounded-xl border border-gray-200 bg-white p-6 shadow-2xs space-y-2">
+              <div key={m.step} className="rounded-xl border border-gray-200 bg-white/60 p-6 shadow-2xs space-y-2">
                 <span className="text-2xl font-black text-indigo-600">{m.step}</span>
                 <h3 className="font-bold text-gray-900 text-base">{m.title}</h3>
                 <p className="text-xs text-gray-500 leading-relaxed">{m.desc}</p>
@@ -59,7 +56,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Faculty Showcase */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white/80 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Our Instructors</span>
@@ -69,7 +66,7 @@ export default async function AboutPage() {
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {trainers.map((t) => (
-              <div key={t.id} className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm space-y-4">
+              <div key={t.id} className="rounded-2xl border border-gray-200 bg-white/60 p-8 shadow-sm space-y-4">
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white font-bold text-xl shrink-0">
                     {t.name.charAt(0)}
@@ -83,7 +80,7 @@ export default async function AboutPage() {
 
                 <p className="text-xs text-gray-600 leading-relaxed">{t.bio}</p>
 
-                <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                <div className="pt-2 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
                   <span>Specialization: <strong>{t.specialization}</strong></span>
                   <span className="rounded bg-indigo-50 px-2 py-0.5 text-indigo-700 font-semibold">{t.languages}</span>
                 </div>
@@ -92,8 +89,6 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
-
-      <PublicFooter />
-    </div>
+    </PublicShell>
   )
 }

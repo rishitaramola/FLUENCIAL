@@ -1,65 +1,67 @@
-﻿import Link from 'next/link'
-import { Globe, Phone, Mail, MapPin, MessageCircle } from 'lucide-react'
+import Link from 'next/link'
+import { BrandMark } from '@/components/brand-mark'
+import { getSiteSettings, socialLinks } from '@/lib/data/site'
 
-export function PublicFooter() {
+export async function PublicFooter() {
+  const settings = await getSiteSettings()
+  const socials = socialLinks(settings)
+
   return (
-    <footer className="border-t border-gray-200 bg-gray-900 text-gray-300">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <footer className="mt-8 border-t border-navy/8 bg-white/50">
+      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
-          {/* Brand info */}
-          <div className="space-y-4 md:col-span-1">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white">
-                <Globe className="h-4 w-4" />
-              </div>
-              <span className="text-lg font-bold text-white">Fluenciel</span>
-            </div>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              Premiere French & European language studio. CEFR aligned training, DELF/GOETHE exam prep, and live speaking labs.
+          <div className="space-y-4">
+            <BrandMark />
+            <p className="max-w-xs text-sm leading-relaxed text-navy/60">
+              {settings.tagline ||
+                'A French language studio for students and professionals who want structured, supportive learning.'}
             </p>
           </div>
 
-          {/* Programs */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Programs & Pathways</h4>
-            <ul className="space-y-2 text-xs text-gray-400">
-              <li><Link href="/courses" className="hover:text-white transition-colors">Study in France Pathway</Link></li>
-              <li><Link href="/courses" className="hover:text-white transition-colors">DELF / TEF Exam Preparation</Link></li>
-              <li><Link href="/courses" className="hover:text-white transition-colors">Professional Business French</Link></li>
-              <li><Link href="/courses" className="hover:text-white transition-colors">Conversational Speaking Labs</Link></li>
+          <div>
+            <h2 className="text-sm font-semibold text-navy">Explore</h2>
+            <ul className="mt-3 space-y-2 text-sm text-navy/65">
+              <li><Link href="/french" className="hover:text-navy">French pathway</Link></li>
+              <li><Link href="/courses" className="hover:text-navy">Courses</Link></li>
+              <li><Link href="/fees" className="hover:text-navy">Fees</Link></li>
+              <li><Link href="/success-stories" className="hover:text-navy">Success stories</Link></li>
             </ul>
           </div>
 
-          {/* Quick Links & Legal */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Company & Legal</h4>
-            <ul className="space-y-2 text-xs text-gray-400">
-              <li><Link href="/about" className="hover:text-white transition-colors">About & Pedagogy</Link></li>
-              <li><Link href="/fees" className="hover:text-white transition-colors">Fees & Installments</Link></li>
-              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link></li>
-              <li><Link href="/refund-policy" className="hover:text-white transition-colors">Refund & Cancellation</Link></li>
+          <div>
+            <h2 className="text-sm font-semibold text-navy">Studio</h2>
+            <ul className="mt-3 space-y-2 text-sm text-navy/65">
+              <li><Link href="/about" className="hover:text-navy">About</Link></li>
+              <li><Link href="/faq" className="hover:text-navy">FAQ</Link></li>
+              <li><Link href="/contact" className="hover:text-navy">Contact</Link></li>
+              <li><Link href="/login" className="hover:text-navy">Student / staff login</Link></li>
             </ul>
           </div>
 
-          {/* WhatsApp Direct */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Direct Connect</h4>
-            <p className="text-xs text-gray-400">Speak directly with an academic counselor on WhatsApp.</p>
-            <a
-              href="https://wa.me/919876543210?text=Hi!%20I%20am%20interested%20in%20learning%20more%20about%20Fluenciel%20language%20courses."
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-emerald-500 transition-colors shadow-xs"
-            >
-              <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
-            </a>
+          <div>
+            <h2 className="text-sm font-semibold text-navy">Policies</h2>
+            <ul className="mt-3 space-y-2 text-sm text-navy/65">
+              <li><Link href="/privacy" className="hover:text-navy">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-navy">Terms & Conditions</Link></li>
+              <li><Link href="/refund-policy" className="hover:text-navy">Refund Policy</Link></li>
+            </ul>
+            {socials.length > 0 && (
+              <ul className="mt-5 flex flex-wrap gap-3 text-sm text-navy/65">
+                {socials.map((s) => (
+                  <li key={s.href}>
+                    <a href={s.href} className="hover:text-navy" rel="noreferrer" target="_blank">
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
-        <div className="mt-12 border-t border-gray-800 pt-6 text-center text-xs text-gray-500">
-          &copy; {new Date().getFullYear()} Fluenciel Language Studio. All rights reserved.
-        </div>
+        <p className="mt-12 text-center text-xs text-navy/40">
+          © {new Date().getFullYear()} {settings.academy_name}. French language education.
+        </p>
       </div>
     </footer>
   )

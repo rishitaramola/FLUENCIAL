@@ -1,39 +1,42 @@
-﻿import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
+import type { Tables, TablesInsert, TablesUpdate } from '@/lib/supabase/types'
 
-export interface SuccessStory {
-  id: string
-  student_name: string
-  course_name: string
-  score_achievement: string
-  testimonial_text: string
-  video_url?: string | null
-  avatar_url?: string | null
-  is_featured: boolean | null
-  display_order: number | null
+export type SuccessStory = Tables<'success_stories'>
+
+export async function getPublishedSuccessStories(): Promise<SuccessStory[]> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('success_stories')
+      .select('*')
+      .eq('is_published', true)
+      .order('display_order', { ascending: true })
+      .order('created_at', { ascending: false })
+
+    if (error || !data) return []
+    return data
+  } catch {
+    return []
+  }
 }
 
-const FALLBACK_STORIES: SuccessStory[] = [
-  {
-    id: '1',
-    student_name: 'Ananya Roy',
-    course_name: 'French B1 Diploma',
-    score_achievement: 'DELF B1 Score: 88.5/100',
-    testimonial_text: 'The live speaking labs and 1-on-1 mock tests gave me total confidence for the DELF examination in New Delhi!',
-    video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    is_featured: true,
-    display_order: 1,
-  },
-  {
-    id: '2',
-    student_name: 'Siddharth Mehta',
-    course_name: 'German A2 FastTrack',
-    score_achievement: 'Goethe A2 Score: 92/100',
-    testimonial_text: 'Small batch sizes meant I spoke German in every single class. Highly recommended for study abroad aspirants.',
-    video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    is_featured: true,
-    display_order: 2,
-  },
-]
+export async function getFeaturedSuccessStories(): Promise<SuccessStory[]> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('success_stories')
+      .select('*')
+      .eq('is_published', true)
+      .eq('is_featured', true)
+      .order('display_order', { ascending: true })
+      .order('created_at', { ascending: false })
+
+    if (error || !data) return []
+    return data
+  } catch {
+    return []
+  }
+}
 
 export async function getSuccessStories(): Promise<SuccessStory[]> {
   try {
@@ -41,13 +44,47 @@ export async function getSuccessStories(): Promise<SuccessStory[]> {
     const { data, error } = await supabase
       .from('success_stories')
       .select('*')
+      .eq('is_published', true)
       .order('display_order', { ascending: true })
 
-    if (error || !data || data.length === 0) {
-      return FALLBACK_STORIES
-    }
-    return data as SuccessStory[]
+    if (error || !data) return []
+    return data
   } catch {
-    return FALLBACK_STORIES
+    return []
   }
+}
+
+export async function getAllSuccessStories(): Promise<SuccessStory[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('success_stories')
+    .select('*')
+    .order('display_order', { ascending: true })
+  if (error) return []
+  return data ?? []
+}
+
+export async function createSuccessStory(story: TablesInsert<'success_stories'>) {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from('success_stories').insert(story).select().single()
+  if (error) throw error
+  return data
+}
+
+export async function updateSuccessStory(id: string, patch: TablesUpdate<'success_stories'>) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('success_stories')
+    .update({ ...patch, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function deleteSuccessStory(id: string) {
+  const supabase = await createClient()
+  const { error } = await supabase.from('success_stories').delete().eq('id', id)
+  if (error) throw error
 }

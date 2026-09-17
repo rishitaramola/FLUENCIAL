@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { PublicNav } from '@/components/public-nav'
-import { PublicFooter } from '@/components/public-footer'
-import { submitLeadAction } from '@/app/actions/leads'
+import { PublicShell } from '@/components/public-shell'
 import { getPublishedCourses } from '@/lib/data/courses'
+import { getSiteSettings } from '@/lib/data/site'
+import { EnquiryForm } from '@/components/enquiry-form'
 import { Mail, Phone, MapPin, MessageCircle, Clock, Sparkles } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -11,189 +11,139 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactPage() {
-  const courses = await getPublishedCourses()
+  const [courses, settings] = await Promise.all([
+    getPublishedCourses(),
+    getSiteSettings()
+  ])
+
+  const hasContactInfo = settings?.email || settings?.phone || settings?.whatsapp || settings?.address || settings?.working_hours
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <PublicNav />
-
+    <PublicShell>
       {/* Header */}
-      <section className="bg-gray-50 border-b border-gray-100 py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
+      <section className="bg-sand/30 border-b border-navy/5 py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6 text-center md:text-left">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold text-navy">
             <Sparkles className="h-3.5 w-3.5" /> Direct Counselor Assistance
           </span>
-          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Get in Touch with Fluenciel Studio
+          <h1 className="text-4xl font-light text-navy sm:text-5xl md:text-6xl tracking-tight">
+            Get in Touch
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl">
+          <p className="text-base sm:text-lg text-navy/70 max-w-2xl mx-auto md:mx-0">
             Have questions about CEFR levels, visa language requirements, or upcoming cohorts? We are here to help.
           </p>
         </div>
       </section>
 
       {/* Main Content: Info & Form */}
-      <section className="py-16 flex-1">
+      <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+            
             {/* Studio Info */}
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">Studio Details & Hours</h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  Visit our language immersion studio or schedule a online counseling session.
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="rounded-xl bg-indigo-50 p-3 text-indigo-600">
-                    <MapPin className="h-6 w-6" />
-                  </div>
+            <div className="space-y-12">
+              {hasContactInfo ? (
+                <>
                   <div>
-                    <h4 className="font-semibold text-gray-900 text-sm">Studio Location</h4>
-                    <p className="text-xs text-gray-600 mt-0.5">
-                      Suite 402, Outer Circle, Connaught Place<br />
-                      New Delhi, 110001, India
+                    <h2 className="text-3xl font-light text-navy">Studio Details</h2>
+                    <p className="text-base text-navy/70 mt-2">
+                      Visit our language immersion studio or schedule an online counseling session.
                     </p>
                   </div>
-                </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="rounded-xl bg-indigo-50 p-3 text-indigo-600">
-                    <Mail className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 text-sm">Email Inquiries</h4>
-                    <p className="text-xs text-gray-600 mt-0.5">admissions@fluenciel.com</p>
-                    <p className="text-xs text-gray-600">support@fluenciel.com</p>
-                  </div>
-                </div>
+                  <div className="space-y-8">
+                    {settings?.address && (
+                      <div className="flex items-start gap-5">
+                        <div className="rounded-2xl bg-navy/5 p-4 text-navy">
+                          <MapPin className="h-6 w-6 stroke-[1.5]" />
+                        </div>
+                        <div className="pt-1">
+                          <h4 className="font-medium text-navy text-base">Studio Location</h4>
+                          <p className="text-sm text-navy/70 mt-1 whitespace-pre-wrap leading-relaxed">
+                            {settings.address}
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
-                <div className="flex items-start gap-4">
-                  <div className="rounded-xl bg-indigo-50 p-3 text-indigo-600">
-                    <Phone className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 text-sm">Phone Helpline</h4>
-                    <p className="text-xs text-gray-600 mt-0.5">+91 98765 43210 / +91 11 4321 8765</p>
-                    <p className="text-xs text-gray-400">Mon - Sat: 9:00 AM - 7:00 PM IST</p>
-                  </div>
-                </div>
-              </div>
+                    {settings?.email && (
+                      <div className="flex items-start gap-5">
+                        <div className="rounded-2xl bg-navy/5 p-4 text-navy">
+                          <Mail className="h-6 w-6 stroke-[1.5]" />
+                        </div>
+                        <div className="pt-1">
+                          <h4 className="font-medium text-navy text-base">Email Inquiries</h4>
+                          <a href={`mailto:${settings.email}`} className="text-sm text-navy/70 hover:text-navy mt-1 inline-block transition-colors">
+                            {settings.email}
+                          </a>
+                        </div>
+                      </div>
+                    )}
 
-              {/* Direct WhatsApp CTA */}
-              <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-6 space-y-3">
-                <h3 className="text-base font-bold text-emerald-900">Need Immediate Advice?</h3>
-                <p className="text-xs text-emerald-700 leading-relaxed">
-                  Chat directly with our academic director on WhatsApp for instant cohort availability.
-                </p>
-                <a
-                  href="https://wa.me/919876543210?text=Hi!%20I%20would%20like%20to%20know%20more%20about%20Fluenciel%20courses."
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 transition-colors"
-                >
-                  <MessageCircle className="h-4 w-4" /> Start WhatsApp Chat
-                </a>
-              </div>
+                    {settings?.phone && (
+                      <div className="flex items-start gap-5">
+                        <div className="rounded-2xl bg-navy/5 p-4 text-navy">
+                          <Phone className="h-6 w-6 stroke-[1.5]" />
+                        </div>
+                        <div className="pt-1">
+                          <h4 className="font-medium text-navy text-base">Phone Helpline</h4>
+                          <a href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`} className="text-sm text-navy/70 hover:text-navy mt-1 block transition-colors">
+                            {settings.phone}
+                          </a>
+                          {settings?.working_hours && (
+                            <div className="flex items-center gap-1.5 mt-2 text-xs text-navy/50">
+                              <Clock className="h-3.5 w-3.5" />
+                              <span>{settings.working_hours}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Direct WhatsApp CTA */}
+                  {settings?.whatsapp && (
+                    <div className="rounded-3xl bg-[#25D366]/10 border border-[#25D366]/20 p-8 space-y-4 mt-8">
+                      <h3 className="text-lg font-medium text-navy">Need Immediate Advice?</h3>
+                      <p className="text-sm text-navy/70 leading-relaxed">
+                        Chat directly with our academic director on WhatsApp for instant cohort availability.
+                      </p>
+                      <a
+                        href={`https://wa.me/${settings.whatsapp.replace(/[^\d]/g, '')}?text=Hi!%20I%20would%20like%20to%20know%20more%20about%20your%20courses.`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-medium text-white shadow-sm hover:bg-[#25D366]/90 transition-colors"
+                      >
+                        <MessageCircle className="h-4 w-4" /> Start WhatsApp Chat
+                      </a>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="flex h-full flex-col justify-center max-w-md">
+                  <h2 className="text-3xl font-light text-navy">Let's Connect</h2>
+                  <p className="text-base text-navy/70 mt-4 leading-relaxed">
+                    Use the enquiry form to get in touch. Our academic counselors will review your details and respond within 24 hours. We are looking forward to hearing from you.
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Lead Form */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-lg space-y-6">
+            <div className="rounded-3xl border border-navy/5 bg-white p-8 sm:p-10 shadow-sm space-y-8">
               <div>
-                <h3 className="text-xl font-bold text-gray-900">Send an Inquiry</h3>
-                <p className="text-xs text-gray-500 mt-1">
-                  Fill in your details and an academic counselor will contact you within 24 hours.
+                <h3 className="text-2xl font-light text-navy">Send an Inquiry</h3>
+                <p className="text-sm text-navy/70 mt-2">
+                  Fill in your details and an academic counselor will contact you shortly.
                 </p>
               </div>
 
-              <form action={submitLeadAction} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-xs font-medium text-gray-700 mb-1">
-                    Your Name *
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    placeholder="e.g. Rahul Verma"
-                    className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-xs font-medium text-gray-700 mb-1">
-                    Email Address *
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder="rahul@example.com"
-                    className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-xs font-medium text-gray-700 mb-1">
-                    Phone Number
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="+91 98765 43210"
-                    className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="courseId" className="block text-xs font-medium text-gray-700 mb-1">
-                    Program Preference
-                  </label>
-                  <select
-                    id="courseId"
-                    name="courseId"
-                    className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                  >
-                    <option value="">Select a course (Optional)</option>
-                    {courses.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.title} ({c.level})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="notes" className="block text-xs font-medium text-gray-700 mb-1">
-                    Message / Special Requirements
-                  </label>
-                  <textarea
-                    id="notes"
-                    name="notes"
-                    rows={3}
-                    placeholder="Mention your learning objective, timeline, or preferred class hours..."
-                    className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 transition-colors"
-                >
-                  Submit Inquiry
-                </button>
-              </form>
+              <EnquiryForm courses={courses} />
             </div>
+            
           </div>
         </div>
       </section>
-
-      <PublicFooter />
-    </div>
+    </PublicShell>
   )
 }

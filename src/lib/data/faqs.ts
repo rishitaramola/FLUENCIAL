@@ -1,57 +1,92 @@
 ﻿import { createClient } from '@/lib/supabase/server'
+import type { Tables, TablesInsert, TablesUpdate } from '@/lib/supabase/types'
 
-export interface FAQItem {
-  id: string
-  question: string
-  answer: string
-  category: string | null
-  display_order: number | null
-}
+export type FAQItem = Tables<'faqs'>
 
-const FALLBACK_FAQS: FAQItem[] = [
+const HONEST_FAQS: FAQItem[] = [
   {
-    id: '1',
-    question: 'What language levels do you teach?',
-    answer: 'We offer complete CEFR-aligned training for French and German from absolute beginner (A1) to advanced proficiency (C1/C2).',
-    category: 'Courses',
+    id: 'local-1',
+    question: 'What does Fluenciel currently offer?',
+    answer:
+      'Fluenciel Language Studio focuses on French language education. Published courses and levels appear on the Courses page. Anything marked Coming Soon is not yet open for enrolment.',
+    category: 'General',
     display_order: 1,
+    is_published: true,
+    created_at: new Date(0).toISOString(),
+    updated_at: new Date(0).toISOString(),
   },
   {
-    id: '2',
-    question: 'Are the DELF / GOETHE certificates globally recognized?',
-    answer: 'Yes! DELF/DALF (French Ministry of Education) and Goethe-Zertifikat (Germany) are official, lifelong diplomas recognized by universities, employers, and immigration authorities worldwide.',
-    category: 'Certifications',
-    display_order: 2,
-  },
-  {
-    id: '3',
-    question: 'How large are the class batches?',
-    answer: 'To guarantee maximum oral speaking practice, our live batches are strictly capped at 8 to 10 students.',
+    id: 'local-2',
+    question: 'How do I book a demo?',
+    answer:
+      'Use the enquiry form on the Contact page. Share your current French level, goal, and preferred timing so the academy can reply with current options.',
     category: 'Classes',
-    display_order: 3,
+    display_order: 2,
+    is_published: true,
+    created_at: new Date(0).toISOString(),
+    updated_at: new Date(0).toISOString(),
   },
   {
-    id: '4',
-    question: 'Can I pay in installments?',
-    answer: 'Yes, installment payment options are available for B1 and B2 diploma programs. Contact admissions for customized payment plans.',
-    category: 'Payments',
-    display_order: 4,
+    id: 'local-3',
+    question: 'Where are the fees listed?',
+    answer:
+      'Fees appear on the Fees page and on each published course only when they have been set. If a fee is missing, contact Fluenciel for current details.',
+    category: 'Fees',
+    display_order: 3,
+    is_published: true,
+    created_at: new Date(0).toISOString(),
+    updated_at: new Date(0).toISOString(),
   },
 ]
 
-export async function getAllFaqs(): Promise<FAQItem[]> {
+export async function getPublishedFaqs(): Promise<FAQItem[]> {
   try {
     const supabase = await createClient()
     const { data, error } = await supabase
       .from('faqs')
       .select('*')
+      .eq('is_published', true)
       .order('display_order', { ascending: true })
 
-    if (error || !data || data.length === 0) {
-      return FALLBACK_FAQS
-    }
-    return data as FAQItem[]
+    if (error || !data) return HONEST_FAQS
+    return data
   } catch {
-    return FALLBACK_FAQS
+    return HONEST_FAQS
   }
+}
+
+export async function getAllFaqs(): Promise<FAQItem[]> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase.from('faqs').select('*').order('display_order', { ascending: true })
+    if (error || !data) return []
+    return data
+  } catch {
+    return []
+  }
+}
+
+export async function createFaq(faq: TablesInsert<'faqs'>) {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from('faqs').insert(faq).select().single()
+  if (error) throw error
+  return data
+}
+
+export async function updateFaq(id: string, patch: TablesUpdate<'faqs'>) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('faqs')
+    .update({ ...patch, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function deleteFaq(id: string) {
+  const supabase = await createClient()
+  const { error } = await supabase.from('faqs').delete().eq('id', id)
+  if (error) throw error
 }

@@ -1,7 +1,6 @@
-﻿import type { Metadata } from 'next'
-import { PublicNav } from '@/components/public-nav'
-import { PublicFooter } from '@/components/public-footer'
-import { getAllFaqs } from '@/lib/data/faqs'
+import type { Metadata } from 'next'
+import { PublicShell } from '@/components/public-shell'
+import { getPublishedFaqs } from '@/lib/data/faqs'
 import { FAQSection } from '@/components/faq-section'
 
 export const metadata: Metadata = {
@@ -10,14 +9,12 @@ export const metadata: Metadata = {
 }
 
 export default async function FAQPage() {
-  const faqs = await getAllFaqs()
+  const faqs = await getPublishedFaqs()
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <PublicNav />
-
+    <PublicShell>
       {/* Header Banner */}
-      <section className="bg-gray-50 border-b border-gray-100 py-16">
+      <section className="bg-white/80 backdrop-blur-sm border-b border-gray-200 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4 text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
             Help & Knowledge Center
@@ -37,8 +34,7 @@ export default async function FAQPage() {
           <FAQSection faqs={faqs} />
         </div>
       </section>
-
-      <PublicFooter />
-    </div>
+    </PublicShell>
   )
 }
+

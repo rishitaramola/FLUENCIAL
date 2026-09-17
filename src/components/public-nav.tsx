@@ -1,62 +1,88 @@
-﻿import Link from 'next/link'
-import { Globe, ArrowRight } from 'lucide-react'
+﻿'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { Menu, X } from 'lucide-react'
+import { BrandMark } from '@/components/brand-mark'
+
+const LINKS = [
+  { href: '/', label: 'Home' },
+  { href: '/french', label: 'French' },
+  { href: '/courses', label: 'Courses' },
+  { href: '/fees', label: 'Fees' },
+  { href: '/success-stories', label: 'Stories' },
+  { href: '/about', label: 'About' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' },
+]
 
 export function PublicNav() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-md">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-200 group-hover:scale-105 transition-transform">
-            <Globe className="h-5 w-5" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xl font-bold tracking-tight text-gray-900 leading-none">
-              Fluenciel
-            </span>
-            <span className="text-[10px] font-semibold tracking-widest text-indigo-600 uppercase mt-0.5">
-              Language Studio
-            </span>
-          </div>
-        </Link>
+    <header className="sticky top-0 z-50">
+      <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
+        <div className="flex h-16 items-center justify-between rounded-full border border-white/70 bg-white/75 px-4 shadow-sm backdrop-blur-md sm:px-5">
+          <BrandMark />
 
-        {/* Links */}
-        <nav className="hidden items-center gap-6 lg:flex">
-          <Link href="/courses" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
-            Courses
-          </Link>
-          <Link href="/about" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
-            About & Pedagogy
-          </Link>
-          <Link href="/fees" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
-            Fees & Tuition
-          </Link>
-          <Link href="/success-stories" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
-            Success Stories
-          </Link>
-          <Link href="/faq" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
-            FAQ
-          </Link>
-          <Link href="/contact" className="text-xs font-semibold text-gray-600 hover:text-indigo-600 transition-colors">
-            Contact Us
-          </Link>
-        </nav>
+          <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
+            {LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-[13px] font-medium text-navy/70 transition-colors hover:text-navy"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
 
-        {/* Actions */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="/login"
-            className="rounded-xl px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            Sign In
-          </Link>
-          <Link
-            href="/courses"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition-colors"
-          >
-            Explore Programs <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/contact"
+              className="hidden rounded-full bg-navy px-4 py-2 text-[13px] font-semibold text-white shadow-sm transition hover:bg-navy/90 sm:inline-flex"
+            >
+              Book a Free Demo
+            </Link>
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-navy/10 bg-white text-navy lg:hidden"
+              aria-expanded={open}
+              aria-controls="mobile-nav"
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span className="sr-only">Toggle menu</span>
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+
+        {open && (
+          <div
+            id="mobile-nav"
+            className="mt-2 overflow-hidden rounded-3xl border border-white/70 bg-white/95 p-4 shadow-lg backdrop-blur lg:hidden"
+          >
+            <nav className="flex flex-col gap-1" aria-label="Mobile">
+              {LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-2xl px-3 py-2.5 text-sm font-medium text-navy hover:bg-ivory"
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                href="/contact"
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-full bg-navy px-4 py-3 text-center text-sm font-semibold text-white"
+              >
+                Book a Free Demo
+              </Link>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   )

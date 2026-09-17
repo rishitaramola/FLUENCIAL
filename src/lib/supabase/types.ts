@@ -1,4 +1,4 @@
-﻿// =============================================================================
+// =============================================================================
 // Database types — hand-authored to match migrations 0000 through 0005
 // Regenerate with `supabase gen types typescript` once Supabase CLI is set up.
 // =============================================================================
@@ -122,6 +122,8 @@ export type Database = {
           speaking_practice: boolean
           brochure_url: string | null
           status: CourseStatus
+          is_featured: boolean | null
+          display_order: number | null
           created_at: string
           updated_at: string
         }
@@ -145,6 +147,8 @@ export type Database = {
           speaking_practice?: boolean
           brochure_url?: string | null
           status?: CourseStatus
+          is_featured?: boolean | null
+          display_order?: number | null
           created_at?: string
           updated_at?: string
         }
@@ -168,6 +172,8 @@ export type Database = {
           speaking_practice?: boolean
           brochure_url?: string | null
           status?: CourseStatus
+          is_featured?: boolean | null
+          display_order?: number | null
           created_at?: string
           updated_at?: string
         }
@@ -250,6 +256,10 @@ export type Database = {
           course_id: string | null
           status: LeadStatus
           notes: string | null
+          current_level: string | null
+          goal: string | null
+          preferred_timing: string | null
+          preferred_mode: string | null
           created_at: string
           updated_at: string
         }
@@ -261,6 +271,10 @@ export type Database = {
           course_id?: string | null
           status?: LeadStatus
           notes?: string | null
+          current_level?: string | null
+          goal?: string | null
+          preferred_timing?: string | null
+          preferred_mode?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -272,6 +286,10 @@ export type Database = {
           course_id?: string | null
           status?: LeadStatus
           notes?: string | null
+          current_level?: string | null
+          goal?: string | null
+          preferred_timing?: string | null
+          preferred_mode?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -383,6 +401,7 @@ export type Database = {
           answer: string
           category: string | null
           display_order: number | null
+          is_published: boolean | null
           created_at: string
           updated_at: string
         }
@@ -392,6 +411,7 @@ export type Database = {
           answer: string
           category?: string | null
           display_order?: number | null
+          is_published?: boolean | null
           created_at?: string
           updated_at?: string
         }
@@ -401,6 +421,7 @@ export type Database = {
           answer?: string
           category?: string | null
           display_order?: number | null
+          is_published?: boolean | null
           created_at?: string
           updated_at?: string
         }
@@ -416,7 +437,12 @@ export type Database = {
           video_url: string | null
           avatar_url: string | null
           is_featured: boolean | null
+          is_published: boolean | null
           display_order: number | null
+          level: string | null
+          language: string | null
+          location: string | null
+          title: string | null
           created_at: string
           updated_at: string
         }
@@ -429,7 +455,12 @@ export type Database = {
           video_url?: string | null
           avatar_url?: string | null
           is_featured?: boolean | null
+          is_published?: boolean | null
           display_order?: number | null
+          level?: string | null
+          language?: string | null
+          location?: string | null
+          title?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -442,7 +473,12 @@ export type Database = {
           video_url?: string | null
           avatar_url?: string | null
           is_featured?: boolean | null
+          is_published?: boolean | null
           display_order?: number | null
+          level?: string | null
+          language?: string | null
+          location?: string | null
+          title?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -795,6 +831,81 @@ export type Database = {
             referencedColumns: ['id']
           },
         ]
+      }
+      site_settings: {
+        Row: {
+          id: number
+          academy_name: string | null
+          short_name: string | null
+          tagline: string | null
+          email: string | null
+          phone: string | null
+          whatsapp: string | null
+          address: string | null
+          working_hours: string | null
+          instagram_url: string | null
+          facebook_url: string | null
+          youtube_url: string | null
+          linkedin_url: string | null
+          about_story: string | null
+          mission: string | null
+          philosophy: string | null
+          methodology: string | null
+          learning_environment: string | null
+          future_vision: string | null
+          announcement: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          academy_name?: string | null
+          short_name?: string | null
+          tagline?: string | null
+          email?: string | null
+          phone?: string | null
+          whatsapp?: string | null
+          address?: string | null
+          working_hours?: string | null
+          instagram_url?: string | null
+          facebook_url?: string | null
+          youtube_url?: string | null
+          linkedin_url?: string | null
+          about_story?: string | null
+          mission?: string | null
+          philosophy?: string | null
+          methodology?: string | null
+          learning_environment?: string | null
+          future_vision?: string | null
+          announcement?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          academy_name?: string | null
+          short_name?: string | null
+          tagline?: string | null
+          email?: string | null
+          phone?: string | null
+          whatsapp?: string | null
+          address?: string | null
+          working_hours?: string | null
+          instagram_url?: string | null
+          facebook_url?: string | null
+          youtube_url?: string | null
+          linkedin_url?: string | null
+          about_story?: string | null
+          mission?: string | null
+          philosophy?: string | null
+          methodology?: string | null
+          learning_environment?: string | null
+          future_vision?: string | null
+          announcement?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {
