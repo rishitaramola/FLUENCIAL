@@ -6,16 +6,26 @@ export const metadata: Metadata = { title: 'Terms & Conditions | Fluenciel Studi
 export default function TermsPage() {
   return (
     <PublicShell>
-      <div className="mx-auto max-w-4xl px-8 py-12 sm:px-12 lg:px-16 space-y-6 my-16 bg-white/80 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm">
-        <h1 className="text-3xl font-bold text-gray-900">Terms & Conditions</h1>
-        <p className="text-sm text-gray-600 leading-relaxed">
-          By accessing Fluenciel Language Studio services, enrolling in courses, or utilizing website resources, you agree to comply with the following terms.
-        </p>
-        <h3 className="text-lg font-bold text-gray-900">Course Enrollment & Attendance</h3>
-        <p className="text-sm text-gray-600 leading-relaxed">
-          Students are expected to adhere to class schedules and maintain active participation in live speaking laboratories. Course materials provided are for individual personal use only.
-        </p>
-      </div>
+      <section className="pt-24 pb-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <div className="rounded-[2.5rem] border border-white bg-white/60 p-8 shadow-sm backdrop-blur-md sm:p-12 space-y-8">
+            <h1 className="font-heading text-3xl font-bold text-navy sm:text-4xl">Terms & Conditions</h1>
+            
+            <div className="space-y-6">
+              <p className="text-[15px] text-navy/65 leading-relaxed">
+                By accessing Fluenciel Language Studio services, enrolling in courses, or utilizing website resources, you agree to comply with the following terms.
+              </p>
+              
+              <div className="space-y-3">
+                <h3 className="font-heading text-xl font-bold text-navy">Course Enrollment & Attendance</h3>
+                <p className="text-[15px] text-navy/65 leading-relaxed">
+                  Students are expected to adhere to class schedules and maintain active participation in live speaking laboratories. Course materials provided are for individual personal use only.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </PublicShell>
   )
 }

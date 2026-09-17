@@ -1,25 +1,24 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { login } from '../actions'
+import { forgotPassword } from '../actions'
 
-export const metadata: Metadata = { title: 'Sign In' }
+export const metadata: Metadata = { title: 'Forgot Password' }
 
 interface Props {
   searchParams: Promise<{
     error?: string
     message?: string
-    redirectTo?: string
   }>
 }
 
-export default async function LoginPage({ searchParams }: Props) {
+export default async function ForgotPasswordPage({ searchParams }: Props) {
   const params = await searchParams
 
   return (
     <>
       <div className="mb-10">
-        <h2 className="font-heading text-3xl font-bold tracking-tight text-navy">Welcome back</h2>
-        <p className="mt-2 text-[15px] text-navy/60">Please enter your details to sign in.</p>
+        <h2 className="font-heading text-3xl font-bold tracking-tight text-navy">Forgot password?</h2>
+        <p className="mt-2 text-[15px] text-navy/60">Enter your email to receive a password reset link.</p>
       </div>
 
       {params.error && (
@@ -34,11 +33,7 @@ export default async function LoginPage({ searchParams }: Props) {
         </div>
       )}
 
-      <form action={login} className="space-y-5">
-        {params.redirectTo && (
-          <input type="hidden" name="redirectTo" value={params.redirectTo} />
-        )}
-
+      <form action={forgotPassword} className="space-y-5">
         <div>
           <label htmlFor="email" className="mb-1.5 block text-[13px] font-semibold text-navy/70">
             Email address
@@ -54,38 +49,18 @@ export default async function LoginPage({ searchParams }: Props) {
           />
         </div>
 
-        <div>
-          <div className="mb-1.5 flex items-center justify-between">
-            <label htmlFor="password" className="block text-[13px] font-semibold text-navy/70">
-              Password
-            </label>
-            <Link href="/forgot-password" className="text-[13px] font-medium text-studio hover:text-studio/80">
-              Forgot password?
-            </Link>
-          </div>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            className="w-full rounded-2xl border border-navy/10 bg-white px-4 py-3 text-[15px] text-navy shadow-sm transition-colors focus:border-studio focus:outline-none focus:ring-4 focus:ring-studio/10"
-            placeholder="••••••••"
-          />
-        </div>
-
         <button
           type="submit"
           className="mt-2 w-full rounded-2xl bg-navy px-4 py-3.5 text-[15px] font-semibold text-white shadow-md transition-all hover:bg-navy/90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-navy/20"
         >
-          Sign in
+          Send reset link
         </button>
       </form>
 
       <p className="mt-8 text-center text-[13px] font-medium text-navy/60">
-        Don&apos;t have an account?{' '}
-        <Link href="/register" className="text-studio hover:text-studio/80 transition-colors">
-          Create one
+        Remember your password?{' '}
+        <Link href="/login" className="text-studio hover:text-studio/80 transition-colors">
+          Sign in
         </Link>
       </p>
     </>

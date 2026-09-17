@@ -1,11 +1,11 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { PublicShell } from '@/components/public-shell'
 import { CourseCards } from '@/components/course-cards'
 import { getPublishedCourses } from '@/lib/data/courses'
 
 export const metadata: Metadata = {
-  title: 'French courses',
-  description: 'Browse published French courses at Fluenciel Language Studio. Levels, formats, and fees are shown only when they have been set.',
+  title: 'Our French Courses | Fluenciel',
+  description: 'Whether you’re planning to study, work or settle abroad, Fluenciel offers structured and goal-oriented French courses designed around your needs.',
   alternates: { canonical: '/courses' },
 }
 
@@ -14,16 +14,26 @@ export default async function CoursesCatalogPage() {
 
   return (
     <PublicShell>
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <p className="inline-flex rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-navy/60">
-          French: available where published · Other languages: Coming Soon
-        </p>
-        <h1 className="mt-5 text-4xl font-semibold tracking-tight text-navy sm:text-5xl">Course catalogue</h1>
-        <p className="mt-4 max-w-2xl text-base text-navy/65">
-          Each programme is listed only when the academy has published it. Choose a course to see curriculum, format,
-          and current fees — or enquire if details are still being confirmed.
-        </p>
-        <div className="mt-12">
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-28 relative">
+        {/* Top area branding */}
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white/60 px-4 py-1.5 backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-studio animate-pulse" />
+            <span className="text-[11px] font-semibold uppercase tracking-widest text-navy/70">
+              Choose your path • Learn French • Achieve your goals
+            </span>
+          </div>
+          
+          <h1 className="font-heading text-4xl tracking-tight text-navy sm:text-6xl lg:text-[64px] lg:leading-[1.1]">
+            Our French<br />Language Courses
+          </h1>
+          
+          <p className="mt-6 text-lg leading-relaxed text-navy/65 sm:text-xl">
+            Whether you’re planning to study, work or settle abroad, Fluenciel offers structured and goal-oriented French courses designed around your needs.
+          </p>
+        </div>
+
+        <div className="relative z-10">
           <CourseCards courses={courses} />
         </div>
       </div>

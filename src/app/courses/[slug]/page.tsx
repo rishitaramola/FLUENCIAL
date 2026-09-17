@@ -1,14 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import Script from 'next/script'
 import { PublicShell } from '@/components/public-shell'
 import { getCourseBySlug } from '@/lib/data/courses'
 import { CheckoutButton } from './checkout-button'
-import {
-  CheckCircle2,
-  ArrowLeft
-} from 'lucide-react'
+import { BackButton } from '@/components/back-button'
+import { CheckCircle2, Clock, Users, BookOpen } from 'lucide-react'
+import { feeLabel } from '@/lib/format'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -17,9 +15,9 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const course = await getCourseBySlug(slug)
-  if (!course) return { title: 'Course Not Found' }
+  if (!course || course.status !== 'published') return { title: 'Course Not Found' }
   return {
-    title: `${course.title} (${course.level}) | Fluenciel Studio`,
+    title: `${course.title} | Fluenciel Language Studio`,
     description: course.short_description,
   }
 }
@@ -28,7 +26,8 @@ export default async function CourseDetailPage({ params }: Props) {
   const { slug } = await params
   const course = await getCourseBySlug(slug)
 
-  if (!course) {
+  // Enforce public visibility rule
+  if (!course || course.status !== 'published') {
     notFound()
   }
 
@@ -41,153 +40,164 @@ export default async function CourseDetailPage({ params }: Props) {
     <PublicShell>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
-      {/* Header Banner */}
-      <section className="bg-gray-900 text-white py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
-          <Link
-            href="/courses"
-            className="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Catalog
-          </Link>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded-full bg-indigo-500/20 border border-indigo-400/30 px-3 py-1 text-xs font-semibold text-indigo-300">
-              Level {course.level}
-            </span>
-            <span className="text-xs text-gray-400 capitalize">{course.mode} Learning</span>
+      {/* Header Banner - Light Premium Variant */}
+      <section className="relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 relative z-10">
+          <div className="mb-8">
+            <BackButton fallbackUrl="/courses" label="Back to Catalog" />
           </div>
-          <h1 className="text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl">
-            {course.title}
-          </h1>
-          <p className="text-sm sm:text-base text-gray-300 max-w-3xl leading-relaxed">
-            {course.description}
-          </p>
+          
+          <div className="max-w-3xl">
+            <div className="mb-6 flex flex-wrap items-center gap-3">
+              <span className="inline-flex rounded-full bg-studio/10 px-3 py-1 text-[11px] font-bold tracking-wider text-studio shadow-sm">
+                LEVEL {course.level}
+              </span>
+              <span className="inline-flex rounded-full border border-navy/10 bg-white/50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-navy/60 backdrop-blur-sm">
+                {course.mode}
+              </span>
+            </div>
+            
+            <h1 className="font-heading text-4xl font-bold tracking-tight text-navy sm:text-5xl lg:text-6xl">
+              {course.title}
+            </h1>
+            
+            <p className="mt-6 text-lg leading-relaxed text-navy/65 sm:text-xl">
+              {course.description}
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Course Main Details & Enrollment Card */}
-      <section className="py-16 flex-1">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-            {/* Left Content (Syllabus & Features) */}
-            <div className="lg:col-span-2 space-y-10">
+      <section className="pb-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+            
+            {/* Left Content */}
+            <div className="lg:col-span-7 xl:col-span-8 space-y-12">
+              
               {/* Program Features */}
-              <div className="rounded-3xl border border-gray-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm space-y-6">
-                <h2 className="text-xl font-bold text-gray-900">What&apos;s Included in this Program</h2>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-900">Live Speaking Labs</h4>
-                      <p className="text-xs text-gray-500">Interactive oral practice sessions twice a week.</p>
+              <div className="rounded-[2.5rem] border border-white bg-white/60 p-8 shadow-sm backdrop-blur-md sm:p-10">
+                <h2 className="font-heading text-2xl font-bold text-navy">What's Included</h2>
+                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-studio/10 text-studio">
+                      <BookOpen className="h-5 w-5" />
                     </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900">{course.mock_tests} Mock Exams</h4>
-                      <p className="text-xs text-gray-500">Full exam diagnostics evaluated by certified trainers.</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-900">Course Materials</h4>
-                      <p className="text-xs text-gray-500">
-                        {course.material_included ? 'Digital workbooks & audio included' : 'Separate materials'}
+                      <h4 className="text-[15px] font-semibold text-navy">Course Materials</h4>
+                      <p className="mt-1 text-sm text-navy/60">
+                        {course.material_included ? 'Digital workbooks included' : 'Materials provided separately'}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600">
+                      <CheckCircle2 className="h-5 w-5" />
+                    </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900">Small Cohorts</h4>
-                      <p className="text-xs text-gray-500">Capped at {course.batch_size} students max.</p>
+                      <h4 className="text-[15px] font-semibold text-navy">{course.mock_tests} Mock Exams</h4>
+                      <p className="mt-1 text-sm text-navy/60">Evaluated diagnostics</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-purple-500/10 text-purple-600">
+                      <Users className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-[15px] font-semibold text-navy">Small Cohorts</h4>
+                      <p className="mt-1 text-sm text-navy/60">Capped at {course.batch_size} students</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-600">
+                      <Clock className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-[15px] font-semibold text-navy">Duration</h4>
+                      <p className="mt-1 text-sm text-navy/60">{course.duration}</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Syllabus Outline */}
-              <div className="rounded-3xl border border-gray-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm space-y-6">
-                <h2 className="text-xl font-bold text-gray-900">Curriculum & Syllabus Breakdown</h2>
-                {syllabusList.length > 0 ? (
-                  <div className="space-y-4">
+              {syllabusList.length > 0 && (
+                <div className="rounded-[2.5rem] border border-white bg-white/60 p-8 shadow-sm backdrop-blur-md sm:p-10">
+                  <h2 className="font-heading text-2xl font-bold text-navy">Curriculum</h2>
+                  <div className="mt-8 space-y-6">
                     {syllabusList.map((module, idx) => (
-                      <div key={idx} className="rounded-xl border border-gray-100 bg-white/60 p-4 space-y-2">
-                        <h4 className="font-semibold text-gray-900 text-sm">{module.title || `Module ${idx + 1}`}</h4>
+                      <div key={idx} className="relative pl-8">
+                        {/* Timeline dot */}
+                        <div className="absolute left-0 top-1.5 h-3 w-3 rounded-full border-2 border-studio bg-white" />
+                        {/* Timeline line */}
+                        {idx !== syllabusList.length - 1 && (
+                          <div className="absolute left-[5px] top-4 bottom-[-24px] w-0.5 bg-studio/20" />
+                        )}
+                        <h4 className="text-[15px] font-semibold text-navy">{module.title || `Module ${idx + 1}`}</h4>
                         {Array.isArray(module.topics) && (
-                          <ul className="space-y-1 text-xs text-gray-600 list-disc list-inside">
+                          <ul className="mt-3 space-y-2">
                             {module.topics.map((t, tIdx) => (
-                              <li key={tIdx}>{t}</li>
+                              <li key={tIdx} className="text-sm text-navy/65 flex items-start">
+                                <span className="mr-2 text-navy/30">•</span> {t}
+                              </li>
                             ))}
                           </ul>
                         )}
                       </div>
                     ))}
                   </div>
-                ) : (
-                  <div className="text-sm text-gray-500 leading-relaxed space-y-2">
-                    <p>• Phonetics, pronunciation mechanics, and basic syntax.</p>
-                    <p>• Conversational dialogues: greetings, travel, professional scenarios.</p>
-                    <p>• Grammar modules: tenses, subjunctive moods, prepositions, articles.</p>
-                    <p>• Listening comprehension exercises and dictation tests.</p>
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Right Sidebar Enrollment Card */}
-            <div className="space-y-6">
-              <div className="sticky top-28 rounded-3xl border border-gray-200 bg-white/80 backdrop-blur-sm p-6 shadow-xl space-y-6">
-                <div className="space-y-2 border-b border-gray-200 pb-4">
-                  <span className="text-xs text-gray-400">Total Course Fee</span>
-                  <div className="text-3xl font-extrabold text-gray-900">
-                    ₹{course.fee.toLocaleString('en-IN')}{' '}
-                    <span className="text-xs font-medium text-gray-500">INR</span>
+            <div className="lg:col-span-5 xl:col-span-4">
+              <div className="sticky top-28 overflow-hidden rounded-[2.5rem] border border-white bg-white/80 p-8 shadow-xl shadow-navy/5 backdrop-blur-xl">
+                <div className="mb-8 pb-8 border-b border-navy/5">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-navy/40">Total Course Fee</span>
+                  <div className="mt-2 text-4xl font-extrabold text-navy">
+                    {feeLabel(course.fee)}{' '}
                   </div>
                   {course.registration_fee > 0 && (
-                    <p className="text-xs text-gray-500">
-                      + ₹{course.registration_fee.toLocaleString('en-IN')} one-time registration fee
+                    <p className="mt-3 text-[13px] font-medium text-navy/50">
+                      + {feeLabel(course.registration_fee)} registration fee
                     </p>
                   )}
                 </div>
 
-                <div className="space-y-3 text-xs text-gray-600">
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span>Duration:</span>
-                    <span className="font-semibold text-gray-900">{course.duration}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span>Learning Mode:</span>
-                    <span className="font-semibold text-gray-900 capitalize">{course.mode}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span>Batch Capacity:</span>
-                    <span className="font-semibold text-gray-900">{course.batch_size} students</span>
+                <div className="mb-8 space-y-4">
+                  <div className="flex items-center justify-between text-[13px]">
+                    <span className="font-medium text-navy/50">Learning Mode</span>
+                    <span className="font-semibold capitalize text-navy">{course.mode}</span>
                   </div>
                   {course.start_date && (
-                    <div className="flex justify-between py-1 border-b border-gray-100">
-                      <span>Cohort Starts:</span>
-                      <span className="font-semibold text-gray-900">
+                    <div className="flex items-center justify-between text-[13px]">
+                      <span className="font-medium text-navy/50">Cohort Starts</span>
+                      <span className="font-semibold text-navy">
                         {new Date(course.start_date).toLocaleDateString()}
                       </span>
                     </div>
                   )}
+                  {course.installment_available && (
+                    <div className="flex items-center justify-between text-[13px]">
+                      <span className="font-medium text-navy/50">Installments</span>
+                      <span className="font-semibold text-emerald-600">Available</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Instant Checkout Trigger */}
                 <CheckoutButton
                   courseId={course.id}
                   courseTitle={course.title}
                   fee={course.fee}
                 />
 
-                <p className="text-[11px] text-center text-gray-400">
-                  Instant secure payment via Razorpay. Tax invoice provided.
+                <p className="mt-6 text-center text-[11px] font-medium text-navy/40">
+                  Secure checkout via Razorpay
                 </p>
               </div>
             </div>

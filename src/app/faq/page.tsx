@@ -14,27 +14,30 @@ export default async function FAQPage() {
   return (
     <PublicShell>
       {/* Header Banner */}
-      <section className="bg-white/80 backdrop-blur-sm border-b border-gray-200 py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4 text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
-            Help & Knowledge Center
-          </span>
-          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+      <section className="relative overflow-hidden pt-16 pb-20 lg:pt-24 lg:pb-28">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 relative z-10 text-center">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white/60 px-4 py-1.5 backdrop-blur-md">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-navy/70">
+              Help & Knowledge Center
+            </span>
+          </div>
+          
+          <h1 className="font-heading text-4xl font-bold tracking-tight text-navy sm:text-5xl lg:text-6xl mx-auto max-w-4xl">
             Frequently Asked Questions
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">
+          
+          <p className="mt-6 text-lg leading-relaxed text-navy/65 sm:text-xl mx-auto max-w-2xl">
             Everything you need to know about our language programs, certification exams, fee structures, and class schedules.
           </p>
         </div>
       </section>
 
       {/* FAQ List */}
-      <section className="py-16 flex-1">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="pb-24">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <FAQSection faqs={faqs} />
         </div>
       </section>
     </PublicShell>
   )
 }
-

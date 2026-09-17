@@ -38,7 +38,7 @@ export default async function HomePage() {
             <p className="inline-flex rounded-full border border-white/80 bg-white/70 px-3 py-1 text-xs font-medium text-navy/60 shadow-sm">
               Language without borders
             </p>
-            <h1 className="mt-6 max-w-xl text-5xl font-semibold tracking-tight text-navy sm:text-6xl lg:text-[4.4rem] lg:leading-[1.05]">
+            <h1 className="mt-6 max-w-xl font-heading text-5xl font-bold tracking-tight text-navy sm:text-6xl lg:text-[4.4rem] lg:leading-[1.05]">
               Find your <span className="fluency-gradient italic">fluency.</span>
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-navy/65 sm:text-lg">
@@ -111,7 +111,7 @@ export default async function HomePage() {
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/40">What Fluenciel offers</p>
-        <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-tight text-navy sm:text-4xl">
+        <h2 className="mt-3 max-w-xl font-heading text-3xl font-bold tracking-tight text-navy sm:text-4xl">
           A language for every ambition
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-navy/60">
@@ -131,7 +131,7 @@ export default async function HomePage() {
       <ScrollReveal>
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
           <div className="grid gap-8 border-y border-navy/8 py-16 md:grid-cols-2">
-            <h2 className="text-4xl font-semibold tracking-tight text-navy sm:text-5xl">
+            <h2 className="font-heading text-4xl font-bold tracking-tight text-navy sm:text-5xl">
               Not memorised.
               <br />
               <span className="lived-gradient italic">Lived.</span>
@@ -156,7 +156,7 @@ export default async function HomePage() {
       <ScrollReveal>
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/40">Why learn French</p>
-          <h2 className="mt-3 text-3xl font-semibold text-navy">A language for study, work, and the wider world</h2>
+          <h2 className="mt-3 font-heading text-3xl font-bold text-navy">A language for study, work, and the wider world</h2>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {[
               ['Communication', 'Speak with more ease in class, travel, and everyday life.'],
@@ -177,7 +177,7 @@ export default async function HomePage() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/40">French level pathway</p>
-              <h2 className="mt-3 text-3xl font-semibold text-navy">A1 → C2</h2>
+              <h2 className="mt-3 font-heading text-3xl font-bold text-navy">A1 → C2</h2>
             </div>
             <Link href="/french" className="text-sm font-semibold text-indigo-600">
               Full pathway →
@@ -206,7 +206,7 @@ export default async function HomePage() {
 
       <ScrollReveal>
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-3xl font-semibold text-navy">Exam preparation</h2>
+          <h2 className="font-heading text-3xl font-bold text-navy">Exam preparation</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-navy/60">
             DELF and TCF are official exams run by recognised testing bodies. Fluenciel may offer exam-oriented practice
             when a published course lists it. Completing a studio course is not an official diploma, and results are not
@@ -222,7 +222,7 @@ export default async function HomePage() {
 
       <ScrollReveal>
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-          <h2 className="text-3xl font-semibold text-navy">Success stories</h2>
+          <h2 className="font-heading text-3xl font-bold text-navy">Success stories</h2>
           <p className="mt-2 text-sm text-navy/60">Only real, published student stories are shown.</p>
           <div className="mt-8">
             <SuccessStoriesSection stories={stories} />
@@ -232,7 +232,7 @@ export default async function HomePage() {
 
       <ScrollReveal>
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-center text-3xl font-semibold text-navy">Questions, answered calmly</h2>
+          <h2 className="text-center font-heading text-3xl font-bold text-navy">Questions, answered calmly</h2>
           <div className="mt-10">
             <FAQSection faqs={faqs} />
           </div>
@@ -244,7 +244,7 @@ export default async function HomePage() {
           <div className="rounded-[2.2rem] bg-navy px-6 py-12 text-white sm:px-12">
             <div className="grid gap-10 lg:grid-cols-2">
               <div>
-                <h2 className="text-3xl font-semibold">Book a free demo</h2>
+                <h2 className="font-heading text-3xl font-bold">Book a free demo</h2>
                 <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70">
                   Tell us where you are with French and what you want to reach. We will reply with current course and
                   demo options — no fabricated urgency, no invented promises.
