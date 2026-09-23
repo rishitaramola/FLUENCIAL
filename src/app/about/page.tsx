@@ -23,19 +23,19 @@ export const metadata: Metadata = {
 }
 
 const features = [
-  { id: '01', title: 'We Stay With You Until Your First Exam Attempt', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: Target },
-  { id: '02', title: 'Doubt-Solving Sessions', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: MessagesSquare },
-  { id: '03', title: 'Mock Tests During the Course', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: FileText },
-  { id: '04', title: 'Mock Tests & Support After Course Completion', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: GraduationCap },
-  { id: '05', title: 'A Class Summary After Every Class', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: FileText },
-  { id: '06', title: 'Assignments After Every Class', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: PenTool },
-  { id: '07', title: 'Interactive Classes', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: MonitorPlay },
-  { id: '08', title: 'French for Real Life + Exam Preparation', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: MessageCircle },
-  { id: '09', title: 'Structured A1 → B2 Learning Journey', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: TrendingUp },
-  { id: '10', title: 'Regular Practice and Feedback', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: CheckCircle2 },
-  { id: '11', title: 'Progress Checks Throughout Your Journey', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: BarChart },
-  { id: '12', title: 'Student-Centric Teaching', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: HeartHandshake },
-  { id: '13', title: 'Exam-Focused When You Need It', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]', icon: Target },
+  { id: '01', title: 'We Stay With You Until Your First Exam Attempt', desc: 'Your Fluenciel journey does not end when your batch ends. For eligible programmes, we continue to support students after the scheduled course duration with doubt-solving sessions, mock tests, examination practice, and academic guidance towards your first examination attempt.', icon: Target },
+  { id: '02', title: 'Doubt-Solving Sessions', desc: 'Our support does not simply stop when the scheduled batch ends. Applicable programmes include continued doubt-solving support to help students clarify difficult grammar, vocabulary, speaking, writing, reading, listening, and examination-related concepts.', icon: MessagesSquare },
+  { id: '03', title: 'Mock Tests During the Course', desc: 'Mock tests and exam-style practice are incorporated into applicable programmes. They help students understand their current level, become familiar with exam-style tasks, practise time management, identify weaknesses, track progress, and build examination confidence.', icon: FileText },
+  { id: '04', title: 'Mock Tests & Support After Course Completion', desc: 'For eligible programmes, mock tests are provided during the course, and additional mock-test opportunities may also be available after the scheduled course duration. This allows you to continue testing your preparation before your examination.', icon: GraduationCap },
+  { id: '05', title: 'A Class Summary After Every Class', desc: 'Students receive a class summary after each class covering important concepts, vocabulary, grammar, and other key points from the session. This makes revision easier and helps students stay organised.', icon: FileText },
+  { id: '06', title: 'Assignments After Every Class', desc: 'Assignments are provided regularly so students can practise what they have learned and reinforce their understanding outside the classroom.', icon: PenTool },
+  { id: '07', title: 'Interactive Classes', desc: 'Our classes are designed to encourage active participation rather than simply listening to a teacher. Students participate in speaking activities, conversations, role plays, listening activities, reading exercises, writing activities, vocabulary practice, and exam-style tasks.', icon: MonitorPlay },
+  { id: '08', title: 'French for Real Life + Exam Preparation', desc: 'Our programmes focus on the four core skills — Listening, Speaking, Reading, and Writing — along with examination-oriented practice and mock tests. We prepare students for real French communication as well as official examinations.', icon: MessageCircle },
+  { id: '09', title: 'Structured A1 → B2 Learning Journey', desc: 'Our structured learning pathway covers A1 → A2 → B1 → B2. The appropriate level depends on your existing French knowledge and your learning objective. If you already know some French, Fluenciel can help determine your appropriate level.', icon: TrendingUp },
+  { id: '10', title: 'Regular Practice and Feedback', desc: 'Our approach includes regular practice activities, speaking exercises, written corrections, and feedback sessions to help students continuously improve and stay on track.', icon: CheckCircle2 },
+  { id: '11', title: 'Progress Checks Throughout Your Journey', desc: 'Students receive ongoing evaluation through mock tests, assignments, and feedback to track their progress and identify areas that need improvement before their examination.', icon: BarChart },
+  { id: '12', title: 'Student-Centric Teaching', desc: 'We design our programmes around the student. Class sizes, schedules, and teaching methods are structured to ensure each learner receives the attention and support they need to progress confidently.', icon: HeartHandshake },
+  { id: '13', title: 'Exam-Focused When You Need It', desc: 'When your examination date approaches, our preparation shifts to exam-specific practice including mock tests, timed exercises, and examination-format tasks across all four skills.', icon: Target },
 ]
 
 export default function AboutPage() {
@@ -87,7 +87,7 @@ export default function AboutPage() {
           <div className="rounded-[2.5rem] border border-white/40 bg-white/80 p-8 shadow-sm backdrop-blur-md sm:p-14 text-center">
             <h2 className="font-heading text-3xl font-bold text-navy sm:text-4xl mb-8">About Fluenciel</h2>
             <div className="space-y-6 text-lg text-navy/70 leading-relaxed">
-              <p>[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]</p>
+              <p>Fluenciel is a French-language education and exam-preparation company focused on helping students learn French and prepare for examinations such as TEF, TCF, DELF and DALF. Our programmes combine structured French learning, interactive classes, assignments, doubt-solving, mock tests, and exam-focused preparation. We believe that completing a batch should not mean completing your preparation. That is why, depending on your programme, your Fluenciel journey may include continued academic support, doubt-solving sessions, and mock-test opportunities even after your scheduled course duration ends.</p>
             </div>
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function AboutPage() {
                 &quot;We created Fluenciel because we wanted to build the kind of French-learning experience that students genuinely need...&quot;
               </blockquote>
               <div className="space-y-4 text-white/80 text-lg">
-                <p>[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]</p>
+                <p>We understand that finishing the syllabus and being ready for an examination are not always the same thing. Students may need additional practice, mock tests, feedback, and doubt-solving before they feel ready for their first attempt. That is why our approach is designed to support students beyond the classroom and towards their examination. At Fluenciel, our goal is to help you continue practising, identify your weaknesses, and prepare with confidence. We do not just teach you and say goodbye when the batch ends. We aim to continue supporting you after the scheduled course duration as you prepare for your first examination attempt.</p>
               </div>
               <div className="mt-10">
                 <p className="font-bold text-white tracking-wider uppercase text-sm">Founders, Fluenciel</p>
@@ -219,14 +219,14 @@ export default function AboutPage() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { title: 'LEARN', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]' },
-              { title: 'PRACTISE', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]' },
-              { title: 'REVIEW', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]' },
-              { title: 'CLARIFY', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]' },
-              { title: 'TEST', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]' },
-              { title: 'IMPROVE', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]' },
-              { title: 'PREPARE', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]' },
-              { title: 'ATTEMPT', desc: '[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]' },
+              { title: 'LEARN', desc: 'Build your foundation with structured grammar, vocabulary, and phonetics through interactive live classes.' },
+              { title: 'PRACTISE', desc: 'Reinforce your learning through regular assignments, speaking exercises, and written practice outside the classroom.' },
+              { title: 'REVIEW', desc: 'Receive a class summary after every session to revise key concepts, vocabulary, and grammar points.' },
+              { title: 'CLARIFY', desc: 'Use dedicated doubt-solving sessions to address questions about grammar, vocabulary, speaking, writing, and exam preparation.' },
+              { title: 'TEST', desc: 'Take mock tests and exam-style assessments to measure your progress and become familiar with examination formats.' },
+              { title: 'IMPROVE', desc: 'Receive detailed feedback on your performance and work on identified weaknesses with targeted practice.' },
+              { title: 'PREPARE', desc: 'Focus on examination-specific tasks including timed practice across listening, speaking, reading, and writing.' },
+              { title: 'ATTEMPT', desc: 'Approach your first examination attempt with confidence, supported by continued academic guidance from Fluenciel.' },
             ].map((step, idx) => (
               <div key={idx} className="rounded-2xl bg-white/60 p-6 border border-white shadow-sm text-center">
                 <div className="text-studio font-black text-xl mb-3">{step.title}</div>
@@ -262,7 +262,7 @@ export default function AboutPage() {
             </div>
 
             <div className="space-y-6 text-lg text-navy/70 leading-relaxed mb-8">
-              <p>[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]</p>
+              <p>At Fluenciel, we are committed to providing a complete French-learning experience. Our programmes are designed to offer structured learning, interactive classes, regular assignments, class summaries, doubt-solving support, mock tests, and feedback — not just during your course, but for eligible programmes, continuing after your scheduled course duration as you prepare for your first examination attempt. We believe that language learning is a journey, and our role is to support you through every step of that journey.</p>
             </div>
             
             <h3 className="font-heading text-2xl font-bold text-navy mt-10">
