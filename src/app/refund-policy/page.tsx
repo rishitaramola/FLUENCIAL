@@ -1,31 +1,43 @@
 import type { Metadata } from 'next'
-import { PublicShell } from '@/components/public-shell'
+import { LegalLayout } from '@/components/legal-layout'
 
-export const metadata: Metadata = { title: 'Refund Policy | Fluenciel Studio' }
+export const metadata: Metadata = {
+  title: 'Refund & Cancellation Policy | Fluenciel',
+}
 
 export default function RefundPolicyPage() {
+  const sections = [
+    '1. No-Refund Policy',
+    '2. Change of Mind',
+    '3. Missed Classes',
+    '4. Rescheduling',
+    '5. Course Transfer',
+    '6. Change of Batch',
+    '7. Course Cancellation by Fluenciel',
+    '8. Teacher Changes',
+    '9. Examination and Immigration Plans',
+    '10. Technical Problems',
+    '11. Promotional and Discounted Courses',
+    '12. Duplicate or Erroneous Payments',
+    '13. Payment Disputes and Chargebacks',
+    '14. Legal Rights',
+    '15. Contact Us',
+  ]
+
   return (
-    <PublicShell>
-      <section className="pt-24 pb-24">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="rounded-[2.5rem] border border-white bg-white/60 p-8 shadow-sm backdrop-blur-md sm:p-12 space-y-8">
-            <h1 className="font-heading text-3xl font-bold text-navy sm:text-4xl">Refund & Cancellation Policy</h1>
-            
-            <div className="space-y-6">
-              <p className="text-[15px] text-navy/65 leading-relaxed">
-                We want you to be completely satisfied with your educational experience at Fluenciel Studio.
-              </p>
-              
-              <div className="space-y-3">
-                <h3 className="font-heading text-xl font-bold text-navy">Demo Class & Cancellation</h3>
-                <p className="text-[15px] text-navy/65 leading-relaxed">
-                  If you are unsatisfied after attending the initial demo session, a full refund of tuition fees will be processed within 7 business days prior to batch commencement.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </PublicShell>
+    <LegalLayout title="Refund & Cancellation Policy">
+      <div className="mb-8 p-4 bg-navy/5 rounded-2xl border border-navy/10">
+        <p className="font-semibold text-navy">
+          Nothing in this Policy is intended to remove, restrict, or waive any mandatory rights or remedies that cannot legally be excluded under applicable Indian law.
+        </p>
+      </div>
+
+      {sections.map((section, idx) => (
+        <section key={idx} id={`section-${idx + 1}`} className="space-y-4">
+          <h2 className="font-heading text-xl font-bold text-navy">{section}</h2>
+          <p>[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]</p>
+        </section>
+      ))}
+    </LegalLayout>
   )
 }

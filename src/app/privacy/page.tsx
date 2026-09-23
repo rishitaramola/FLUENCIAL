@@ -1,38 +1,40 @@
 import type { Metadata } from 'next'
-import { PublicShell } from '@/components/public-shell'
+import { LegalLayout } from '@/components/legal-layout'
 
-export const metadata: Metadata = { title: 'Privacy Policy | Fluenciel Studio' }
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Fluenciel',
+}
 
 export default function PrivacyPage() {
+  const sections = [
+    '1. Information We Collect',
+    '2. How We Use Your Information',
+    '3. Legal Basis for Processing',
+    '4. Sharing of Information',
+    '5. International Data Transfers',
+    '6. Cookies and Tracking Technologies',
+    '7. Marketing Communications',
+    '8. Data Security',
+    '9. Data Retention',
+    '10. Your Privacy Rights',
+    '11. Children\'s Privacy',
+    '12. Third-Party Websites and Services',
+    '13. Social Media',
+    '14. Student Testimonials and Photographs',
+    '15. Changes to This Privacy Policy',
+    '16. Grievance Redressal',
+    '17. Governing Law',
+    '18. Contact Us',
+  ]
+
   return (
-    <PublicShell>
-      <section className="pt-24 pb-24">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="rounded-[2.5rem] border border-white bg-white/60 p-8 shadow-sm backdrop-blur-md sm:p-12 space-y-8">
-            <h1 className="font-heading text-3xl font-bold text-navy sm:text-4xl">Privacy Policy</h1>
-            
-            <div className="space-y-6">
-              <p className="text-[15px] text-navy/65 leading-relaxed">
-                At Fluenciel Language Studio, we take your privacy seriously. This policy describes how we collect, use, and protect your personal information when you use our website or register for our language programs.
-              </p>
-              
-              <div className="space-y-3">
-                <h3 className="font-heading text-xl font-bold text-navy">Information We Collect</h3>
-                <p className="text-[15px] text-navy/65 leading-relaxed">
-                  We collect personal details such as your name, email address, phone number, and course preferences when you submit inquiry forms, book demo sessions, or enroll in a program.
-                </p>
-              </div>
-              
-              <div className="space-y-3">
-                <h3 className="font-heading text-xl font-bold text-navy">Payment Data</h3>
-                <p className="text-[15px] text-navy/65 leading-relaxed">
-                  Online payments are processed securely through Razorpay. We do not store sensitive payment credentials (card details, UPI PINs, or banking passwords) on our servers.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </PublicShell>
+    <LegalLayout title="Privacy Policy">
+      {sections.map((section, idx) => (
+        <section key={idx} id={`section-${idx + 1}`} className="space-y-4">
+          <h2 className="font-heading text-xl font-bold text-navy">{section}</h2>
+          <p>[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]</p>
+        </section>
+      ))}
+    </LegalLayout>
   )
 }

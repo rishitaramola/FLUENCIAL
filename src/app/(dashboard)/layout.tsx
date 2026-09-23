@@ -1,4 +1,4 @@
-﻿import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { logout } from '@/app/(auth)/actions'
@@ -13,6 +13,7 @@ const NAV: Record<AppRole, { href: string; label: string }[]> = {
     { href: '/dashboard/admin/teachers', label: 'Teachers' },
     { href: '/dashboard/admin/testimonials', label: 'Success Stories' },
     { href: '/dashboard/admin/faqs', label: 'FAQs' },
+    { href: '/dashboard/admin/questions', label: 'Visitor Questions' },
     { href: '/dashboard/admin/payments', label: 'Payments' },
   ],
   TEACHER: [

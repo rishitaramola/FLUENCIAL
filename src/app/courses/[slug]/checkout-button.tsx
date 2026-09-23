@@ -65,28 +65,39 @@ export function CheckoutButton({ courseId, courseTitle, fee }: CheckoutButtonPro
   }
 
   return (
-    <div className="space-y-3">
-      <button
-        onClick={handleCheckout}
-        disabled={loading}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-200 hover:bg-indigo-500 transition-colors disabled:opacity-50"
-      >
-        {loading ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" /> Creating Order...
-          </>
-        ) : (
-          <>
-            <CreditCard className="h-4 w-4" /> Enroll & Pay ?{fee.toLocaleString('en-IN')}
-          </>
-        )}
-      </button>
+    <div className="space-y-4">
+      <div className="space-y-3">
+        <button
+          onClick={handleCheckout}
+          disabled={loading}
+          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-200 hover:bg-indigo-500 transition-colors disabled:opacity-50"
+        >
+          {loading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" /> Creating Order...
+            </>
+          ) : (
+            <>
+              <CreditCard className="h-4 w-4" /> Enroll & Pay ?{fee.toLocaleString('en-IN')}
+            </>
+          )}
+        </button>
 
-      {statusMsg && (
-        <div className="rounded-lg bg-indigo-50 p-3 text-center text-xs font-medium text-indigo-700 border border-indigo-100">
-          {statusMsg}
-        </div>
-      )}
+        {statusMsg && (
+          <div className="rounded-lg bg-indigo-50 p-3 text-center text-xs font-medium text-indigo-700 border border-indigo-100">
+            {statusMsg}
+          </div>
+        )}
+      </div>
+      
+      <p className="text-center text-[11px] text-navy/50 leading-relaxed max-w-xs mx-auto">
+        By enrolling, you agree to our{' '}
+        <a href="/terms" className="underline hover:text-navy" target="_blank" rel="noopener noreferrer">Terms</a>
+        ,{' '}
+        <a href="/privacy" className="underline hover:text-navy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        , and{' '}
+        <a href="/refund-policy" className="underline hover:text-navy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.
+      </p>
     </div>
   )
 }

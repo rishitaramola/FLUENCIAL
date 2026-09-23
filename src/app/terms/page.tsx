@@ -1,31 +1,56 @@
 import type { Metadata } from 'next'
-import { PublicShell } from '@/components/public-shell'
+import { LegalLayout } from '@/components/legal-layout'
 
-export const metadata: Metadata = { title: 'Terms & Conditions | Fluenciel Studio' }
+export const metadata: Metadata = {
+  title: 'Terms & Conditions | Fluenciel',
+}
 
 export default function TermsPage() {
+  const sections = [
+    '1. About Fluenciel',
+    '2. Eligibility',
+    '3. Course Registration',
+    '4. Course Fees and Payment',
+    '5. Payment Confirmation',
+    '6. Course Duration and Validity',
+    '7. Class Schedule',
+    '8. Attendance',
+    '9. Late Arrival',
+    '10. Class Rescheduling',
+    '11. Teacher Changes',
+    '12. Online Classes and Technical Requirements',
+    '13. Study Materials',
+    '14. Intellectual Property',
+    '15. Recording of Classes',
+    '16. Examination Preparation Disclaimer',
+    '17. No Guarantee of Results',
+    '18. Refund and Cancellation',
+    '19. Transfer of Course',
+    '20. Promotional Offers',
+    '21. Student Conduct',
+    '22. Suspension or Termination',
+    '23. Website Use',
+    '24. Third-Party Services',
+    '25. Third-Party Links',
+    '26. Availability of Services',
+    '27. Limitation of Liability',
+    '28. Privacy',
+    '29. Changes to Courses and Terms',
+    '30. Force Majeure',
+    '31. Governing Law',
+    '32. Severability',
+    '33. Entire Agreement',
+    '34. Contact Information',
+  ]
+
   return (
-    <PublicShell>
-      <section className="pt-24 pb-24">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="rounded-[2.5rem] border border-white bg-white/60 p-8 shadow-sm backdrop-blur-md sm:p-12 space-y-8">
-            <h1 className="font-heading text-3xl font-bold text-navy sm:text-4xl">Terms & Conditions</h1>
-            
-            <div className="space-y-6">
-              <p className="text-[15px] text-navy/65 leading-relaxed">
-                By accessing Fluenciel Language Studio services, enrolling in courses, or utilizing website resources, you agree to comply with the following terms.
-              </p>
-              
-              <div className="space-y-3">
-                <h3 className="font-heading text-xl font-bold text-navy">Course Enrollment & Attendance</h3>
-                <p className="text-[15px] text-navy/65 leading-relaxed">
-                  Students are expected to adhere to class schedules and maintain active participation in live speaking laboratories. Course materials provided are for individual personal use only.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </PublicShell>
+    <LegalLayout title="Terms & Conditions">
+      {sections.map((section, idx) => (
+        <section key={idx} id={`section-${idx + 1}`} className="space-y-4">
+          <h2 className="font-heading text-xl font-bold text-navy">{section}</h2>
+          <p>[INSERT EXACT CONTENT FROM SOURCE MATERIAL HERE]</p>
+        </section>
+      ))}
+    </LegalLayout>
   )
 }

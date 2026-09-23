@@ -797,6 +797,45 @@ export type Database = {
           },
         ]
       }
+      visitor_questions: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          phone: string | null
+          question: string
+          status: string
+          admin_answer: string | null
+          is_public: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          phone?: string | null
+          question: string
+          status?: string
+          admin_answer?: string | null
+          is_public?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          email?: string
+          phone?: string | null
+          question?: string
+          status?: string
+          admin_answer?: string | null
+          is_public?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       brochures: {
         Row: {
           id: string

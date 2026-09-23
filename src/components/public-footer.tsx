@@ -12,6 +12,9 @@ export async function PublicFooter() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div className="space-y-4">
             <BrandMark />
+            <p className="max-w-xs text-sm leading-relaxed text-navy/60 font-semibold">
+              Learn French. Build Confidence. Achieve Your Goal.
+            </p>
             <p className="max-w-xs text-sm leading-relaxed text-navy/60">
               {settings.tagline ||
                 'A French language studio for students and professionals who want structured, supportive learning.'}
@@ -19,31 +22,22 @@ export async function PublicFooter() {
           </div>
 
           <div>
-            <h2 className="text-sm font-semibold text-navy">Explore</h2>
+            <h2 className="text-sm font-semibold text-navy">Company</h2>
             <ul className="mt-3 space-y-2 text-sm text-navy/65">
-              <li><Link href="/french" className="hover:text-navy">French pathway</Link></li>
+              <li><Link href="/about" className="hover:text-navy">About Fluenciel</Link></li>
               <li><Link href="/courses" className="hover:text-navy">Courses</Link></li>
-              <li><Link href="/fees" className="hover:text-navy">Fees</Link></li>
-              <li><Link href="/success-stories" className="hover:text-navy">Success stories</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="text-sm font-semibold text-navy">Studio</h2>
-            <ul className="mt-3 space-y-2 text-sm text-navy/65">
-              <li><Link href="/about" className="hover:text-navy">About</Link></li>
+              <li><Link href="/success-stories" className="hover:text-navy">Success Stories</Link></li>
               <li><Link href="/faq" className="hover:text-navy">FAQ</Link></li>
               <li><Link href="/contact" className="hover:text-navy">Contact</Link></li>
-              <li><Link href="/login" className="hover:text-navy">Student / staff login</Link></li>
             </ul>
           </div>
 
           <div>
             <h2 className="text-sm font-semibold text-navy">Policies</h2>
             <ul className="mt-3 space-y-2 text-sm text-navy/65">
-              <li><Link href="/privacy" className="hover:text-navy">Privacy Policy</Link></li>
               <li><Link href="/terms" className="hover:text-navy">Terms & Conditions</Link></li>
-              <li><Link href="/refund-policy" className="hover:text-navy">Refund Policy</Link></li>
+              <li><Link href="/privacy" className="hover:text-navy">Privacy Policy</Link></li>
+              <li><Link href="/refund-policy" className="hover:text-navy">Refund & Cancellation Policy</Link></li>
             </ul>
             {socials.length > 0 && (
               <ul className="mt-5 flex flex-wrap gap-3 text-sm text-navy/65">
@@ -56,6 +50,13 @@ export async function PublicFooter() {
                 ))}
               </ul>
             )}
+          </div>
+          
+          <div>
+            <h2 className="text-sm font-semibold text-navy">Studio</h2>
+            <ul className="mt-3 space-y-2 text-sm text-navy/65">
+              <li><Link href="/login" className="hover:text-navy">Student / staff login</Link></li>
+            </ul>
           </div>
         </div>
 
