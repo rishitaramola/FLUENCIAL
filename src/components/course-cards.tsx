@@ -42,8 +42,8 @@ const VARIANTS = {
 function getVariant(course: Course) {
   const title = (course.title || '').toUpperCase()
   const slug = (course.slug || '').toUpperCase()
-  if (title.includes('TEF') || title.includes('TCF') || slug.includes('TEF') || slug.includes('TCF')) return VARIANTS.TEF
-  if (title.includes('DELF') || title.includes('DALF') || slug.includes('DELF') || slug.includes('DALF')) return VARIANTS.DELF
+  if (title.includes('TEF') || title.includes('TCF') || slug.includes('TEF') || slug.includes('TCF') || slug.includes('PR-TRACK') || title.includes('PR TRACK')) return VARIANTS.TEF
+  if (title.includes('DELF') || title.includes('DALF') || slug.includes('DELF') || slug.includes('DALF') || slug.includes('EXCELLENCE-TRACK') || title.includes('EXCELLENCE TRACK')) return VARIANTS.DELF
   if (title.includes('SPRINT') || slug.includes('SPRINT')) return VARIANTS.SPRINT
   return VARIANTS.DEFAULT
 }
@@ -93,20 +93,45 @@ export function CourseCards({ courses }: { courses: Course[] }) {
               </h2>
               
               <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40">
-                {variant.defaultSubtitle}
+                {course.short_description || variant.defaultSubtitle}
               </div>
 
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-navy/65">
-                {course.short_description || course.description?.substring(0, 100) + '...'}
-              </p>
+              {/* Description */}
+              <div className="mt-4 text-sm leading-relaxed text-navy/65 flex-1">
+                {(() => {
+                  const desc = course.description || ''
+                  const lines = desc.split('\n')
+                  const normalLines = lines.filter(l => !l.trim().startsWith('-') && !l.trim().toLowerCase().startsWith('includes'))
+                  const bulletLines = lines.filter(l => l.trim().startsWith('-')).map(l => l.trim().replace(/^- /g, '').trim())
+                  
+                  return (
+                    <div className="flex flex-col h-full">
+                      <p className="mb-4">{normalLines.join(' ')}</p>
+                      {bulletLines.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-auto">
+                          {bulletLines.slice(0, 6).map((bullet, i) => (
+                            <span key={i} className="inline-flex rounded-md bg-white/60 border border-navy/5 px-2.5 py-1 text-[11px] font-medium text-navy/70 backdrop-blur-sm">
+                              {bullet}
+                            </span>
+                          ))}
+                          {bulletLines.length > 6 && (
+                            <span className="inline-flex rounded-md bg-transparent px-1 py-1 text-[11px] font-medium text-navy/40">
+                              +{bulletLines.length - 6} more
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })()}
+              </div>
 
               <div className="mt-8 pt-6 border-t border-navy/5 flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-xs font-medium text-navy/50">{course.mode}</span>
-                  <span className="text-[15px] font-bold text-navy">{feeLabel(course.fee)}</span>
+                  <span className="text-[15px] font-bold text-navy">Explore {course.title}</span>
                 </div>
                 
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-navy shadow-sm transition-transform group-hover:scale-110">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-navy shadow-sm transition-transform group-hover:scale-110 border border-navy/5">
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </div>

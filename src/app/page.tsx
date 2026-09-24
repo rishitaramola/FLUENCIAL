@@ -52,7 +52,7 @@ export default async function HomePage() {
                 Find your language <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/about"
+                href="/method"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white bg-white/80 px-6 py-3.5 text-sm font-semibold text-navy transition hover:bg-white"
               >
                 <Play className="h-3.5 w-3.5" /> Our approach
@@ -112,53 +112,14 @@ export default async function HomePage() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/40">Course catalogue</p>
         <div className="mt-3 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <h2 className="font-heading text-3xl font-bold tracking-tight text-navy sm:text-4xl">
-            A language for every ambition
+            Choose the pathway that matches your goal.
           </h2>
           <Link href="/courses" className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
             Meet Fluenciel →
           </Link>
         </div>
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {[
-            {
-              title: 'Japanese',
-              level: 'BEGINNER',
-              desc: 'From hiragana to meaningful conversation.',
-              icon: '日',
-            },
-            {
-              title: 'Spanish',
-              level: 'PROFESSIONAL',
-              desc: 'Confident language for work and travel.',
-              icon: 'A',
-              iconColor: 'text-sky-500',
-            },
-            {
-              title: 'Arabic',
-              level: 'ALL LEVELS',
-              desc: 'Modern Standard with a living accent.',
-              icon: 'م',
-              iconColor: 'text-fuchsia-500',
-            },
-          ].map((c) => (
-            <div
-              key={c.title}
-              className="flex flex-col rounded-[2rem] border border-white/60 bg-white/40 p-8 shadow-sm backdrop-blur-md transition hover:bg-white/60"
-            >
-              <div className="flex items-center justify-between mb-8">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl shadow-sm ${c.iconColor || 'text-indigo-600'}`}>
-                  {c.icon}
-                </div>
-                <span className="text-[10px] font-bold tracking-widest text-navy/40">{c.level}</span>
-              </div>
-              <h3 className="font-heading text-2xl font-bold text-navy">{c.title}</h3>
-              <p className="mt-3 flex-1 text-sm text-navy/60 leading-relaxed">{c.desc}</p>
-              <div className="mt-8 flex items-center justify-between border-t border-navy/5 pt-6">
-                <span className="text-xs font-bold text-navy">Live · guided</span>
-                <ArrowRight className="h-4 w-4 text-navy/40" />
-              </div>
-            </div>
-          ))}
+        <div className="mt-10">
+          <CourseCards courses={catalogue} />
         </div>
       </section>
 
