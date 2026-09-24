@@ -60,9 +60,14 @@ export async function PublicFooter() {
           </div>
         </div>
 
-        <p className="mt-12 text-center text-xs text-navy/40">
-          © {new Date().getFullYear()} {settings.academy_name}. French language education.
-        </p>
+        <div className="mt-16 text-center">
+          <p className="text-lg font-semibold text-navy/70 mb-4">
+            A bold new language studio for people ready to understand
+          </p>
+          <p className="text-xs text-navy/40">
+            © {new Date().getFullYear()} {settings.academy_name}. French language education.
+          </p>
+        </div>
       </div>
     </footer>
   )

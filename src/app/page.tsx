@@ -42,26 +42,25 @@ export default async function HomePage() {
               Find your <span className="fluency-gradient italic">fluency.</span>
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-navy/65 sm:text-lg">
-              {settings.tagline ||
-                'Thoughtful French courses for students, professionals, and endlessly curious minds. Learn to speak with confidence — and connect with a wider world.'}
+              Thoughtful language courses for students, professionals, and endlessly curious minds. Learn to speak with confidence—and connect with a wider world.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-3.5 text-sm font-semibold text-white"
+                href="/courses"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-navy/90"
               >
-                Book a Free Demo <ArrowRight className="h-4 w-4" />
+                Find your language <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/courses"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white bg-white/80 px-6 py-3.5 text-sm font-semibold text-navy"
+                href="/about"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white bg-white/80 px-6 py-3.5 text-sm font-semibold text-navy transition hover:bg-white"
               >
-                <Play className="h-3.5 w-3.5" /> Explore Courses
+                <Play className="h-3.5 w-3.5" /> Our approach
               </Link>
             </div>
             <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-navy/55">
               <li>✓ Live small groups</li>
-              <li>✓ Structured CEFR pathway</li>
+              <li>✓ Expert guidance</li>
               <li>✓ Practical conversation</li>
             </ul>
           </div>
@@ -110,21 +109,56 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/40">What Fluenciel offers</p>
-        <h2 className="mt-3 max-w-xl font-heading text-3xl font-bold tracking-tight text-navy sm:text-4xl">
-          A language for every ambition
-        </h2>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-navy/60">
-          French is our current focus. Courses are listed only when they are published. Other languages and higher
-          levels may appear as Coming Soon.
-        </p>
-        <div className="mt-10">
-          <CourseCards courses={catalogue} />
-        </div>
-        <div className="mt-6 text-right">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/40">Course catalogue</p>
+        <div className="mt-3 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-navy sm:text-4xl">
+            A language for every ambition
+          </h2>
           <Link href="/courses" className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
             Meet Fluenciel →
           </Link>
+        </div>
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {[
+            {
+              title: 'Japanese',
+              level: 'BEGINNER',
+              desc: 'From hiragana to meaningful conversation.',
+              icon: '日',
+            },
+            {
+              title: 'Spanish',
+              level: 'PROFESSIONAL',
+              desc: 'Confident language for work and travel.',
+              icon: 'A',
+              iconColor: 'text-sky-500',
+            },
+            {
+              title: 'Arabic',
+              level: 'ALL LEVELS',
+              desc: 'Modern Standard with a living accent.',
+              icon: 'م',
+              iconColor: 'text-fuchsia-500',
+            },
+          ].map((c) => (
+            <div
+              key={c.title}
+              className="flex flex-col rounded-[2rem] border border-white/60 bg-white/40 p-8 shadow-sm backdrop-blur-md transition hover:bg-white/60"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl shadow-sm ${c.iconColor || 'text-indigo-600'}`}>
+                  {c.icon}
+                </div>
+                <span className="text-[10px] font-bold tracking-widest text-navy/40">{c.level}</span>
+              </div>
+              <h3 className="font-heading text-2xl font-bold text-navy">{c.title}</h3>
+              <p className="mt-3 flex-1 text-sm text-navy/60 leading-relaxed">{c.desc}</p>
+              <div className="mt-8 flex items-center justify-between border-t border-navy/5 pt-6">
+                <span className="text-xs font-bold text-navy">Live · guided</span>
+                <ArrowRight className="h-4 w-4 text-navy/40" />
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

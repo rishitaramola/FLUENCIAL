@@ -8,6 +8,7 @@ import { BrandMark } from '@/components/brand-mark'
 
 const LINKS = [
   { href: '/courses', label: 'Courses' },
+  { href: '/method', label: 'Method' },
   { href: '/about', label: 'About' },
   { href: '/success-stories', label: 'Stories' },
   { href: '/fees', label: 'Fees' },
@@ -76,10 +77,10 @@ export function PublicNav() {
               Sign In
             </Link>
             <Link
-              href="/contact"
-              className="hidden rounded-full bg-navy px-4 py-2 text-[13px] font-semibold text-white shadow-sm transition hover:bg-navy/90 sm:inline-flex"
+              href="/courses"
+              className="hidden rounded-full bg-navy px-5 py-2.5 text-[13px] font-semibold text-white shadow-sm transition hover:bg-navy/90 sm:inline-flex"
             >
-              Book a Free Demo
+              Explore courses
             </Link>
             <button
               type="button"
@@ -131,11 +132,11 @@ export function PublicNav() {
               Sign In
             </Link>
             <Link
-              href="/contact"
+              href="/courses"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-full bg-navy px-4 py-3.5 text-center text-[15px] font-semibold text-white transition-colors hover:bg-navy/90"
             >
-              Book a Free Demo
+              Explore courses
             </Link>
           </nav>
         </div>
