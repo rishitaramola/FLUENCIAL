@@ -30,13 +30,31 @@ export async function submitVisitorQuestion(formData: FormData) {
       return { success: false, error: 'Failed to submit question. Please try again.' }
     }
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fluenciel.com'
+
+    // 1. Send Visitor Acknowledgement
+    try {
+      await sendTransactionalEmail({
+        to: email,
+        subject: 'We received your query — Fluenciel Language Academy',
+        text: `Hi ${name},\n\nThank you for contacting Fluenciel Language Academy.\n\nWe have received your query successfully and our team will review it shortly.\n\nYour query:\n${question}\n\nWe’ll get back to you as soon as possible.\n\nRegards,\nFluenciel Language Academy\n\n${siteUrl}`,
+      })
+    } catch (emailErr) {
+      console.error('Failed to send visitor acknowledgement email:', emailErr)
+    }
+
+    // 2. Send Admin Notification
     const adminInbox = process.env.LEADS_NOTIFY_EMAIL
     if (adminInbox) {
-      await sendTransactionalEmail({
-        to: adminInbox,
-        subject: `New Question Received — Fluenciel`,
-        text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone || '—'}\n\nQuestion:\n${question}\n\nReview it in your Admin Dashboard.`,
-      })
+      try {
+        await sendTransactionalEmail({
+          to: adminInbox,
+          subject: 'New FAQ Query — Fluenciel Website',
+          text: `A new question has been submitted through the Fluenciel website.\n\nName: ${name}\nEmail: ${email}\n\nQuestion:\n${question}\n\nSubmitted: ${new Date().toLocaleString()}\n\nPlease review the query in the existing admin workflow.`,
+        })
+      } catch (adminEmailErr) {
+        console.error('Failed to send admin notification email:', adminEmailErr)
+      }
     }
 
     return { success: true }
@@ -49,6 +67,19 @@ export async function submitVisitorQuestion(formData: FormData) {
 export async function answerVisitorQuestion(id: string, admin_answer: string, sendEmail: boolean, visitorEmail?: string) {
   try {
     const supabase = await createClient()
+    
+    // Fetch the existing question first to get Name and Original Question
+    const { data: existingQ, error: fetchErr } = await supabase
+      .from('visitor_questions')
+      .select('name, email, question, status')
+      .eq('id', id)
+      .single()
+      
+    if (fetchErr || !existingQ) {
+      return { success: false, error: 'Could not find the original question.' }
+    }
+
+    // Save the answer exactly as before
     const { error } = await supabase
       .from('visitor_questions')
       .update({ admin_answer, status: 'ANSWERED' })
@@ -58,12 +89,21 @@ export async function answerVisitorQuestion(id: string, admin_answer: string, se
       return { success: false, error: error.message }
     }
 
-    if (sendEmail && visitorEmail) {
-      await sendTransactionalEmail({
-        to: visitorEmail,
-        subject: 'Response to your question — Fluenciel',
-        text: `Hello,\n\nHere is our response to your question:\n\n${admin_answer}\n\n— The Fluenciel Team`,
-      })
+    // Trigger the automated email if requested
+    if (sendEmail && existingQ.email) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fluenciel.com'
+      const emailContent = `Hi ${existingQ.name},\n\nYour query has been answered by the Fluenciel Language Academy team.\n\nYour original query:\n${existingQ.question}\n\nOur response:\n${admin_answer}\n\nThank you for reaching out to us.\n\nRegards,\nFluenciel Language Academy\n\n${siteUrl}`
+      
+      try {
+        await sendTransactionalEmail({
+          to: existingQ.email,
+          subject: 'Your query has been answered — Fluenciel Language Academy',
+          text: emailContent,
+        })
+      } catch (emailErr) {
+        // Log gracefully so the answer is still saved
+        console.error('Failed to send answer email:', emailErr)
+      }
     }
 
     revalidatePath('/dashboard/admin/questions')
