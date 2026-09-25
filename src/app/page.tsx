@@ -12,6 +12,8 @@ import { getSuccessStories } from '@/lib/data/testimonials'
 import { getSiteSettings } from '@/lib/data/site'
 import { CEFR_LEVELS, normalizeLevel } from '@/lib/cefr'
 import { ScrollReveal } from '@/components/scroll-reveal'
+import { BrochureDownloadButton } from '@/components/brochure-download-button'
+import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
   title: 'French language studio',
@@ -20,6 +22,9 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   const [courses, faqs, stories, settings] = await Promise.all([
     getPublishedCourses(),
     getPublishedFaqs(),
@@ -57,6 +62,7 @@ export default async function HomePage() {
               >
                 <Play className="h-3.5 w-3.5" /> Our approach
               </Link>
+              <BrochureDownloadButton isAuthenticated={!!user} courses={courses} />
             </div>
             <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-navy/55">
               <li>✓ Live small groups</li>

@@ -260,7 +260,9 @@ export type Database = {
           goal: string | null
           preferred_timing: string | null
           preferred_mode: string | null
-          created_at: string
+            dob: string | null
+            source: string | null
+            created_at: string
           updated_at: string
         }
         Insert: {
@@ -275,7 +277,9 @@ export type Database = {
           goal?: string | null
           preferred_timing?: string | null
           preferred_mode?: string | null
-          created_at?: string
+            dob?: string | null
+            source?: string | null
+            created_at?: string
           updated_at?: string
         }
         Update: {
@@ -290,7 +294,9 @@ export type Database = {
           goal?: string | null
           preferred_timing?: string | null
           preferred_mode?: string | null
-          created_at?: string
+            dob?: string | null
+            source?: string | null
+            created_at?: string
           updated_at?: string
         }
         Relationships: [
