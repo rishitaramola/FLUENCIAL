@@ -5,55 +5,122 @@ import { revalidatePath } from 'next/cache'
 import { sendTransactionalEmail } from '@/lib/email'
 
 export async function submitVisitorQuestion(formData: FormData) {
-  const name = formData.get('name') as string
-  const email = formData.get('email') as string
-  const phone = formData.get('phone') as string
-  const question = formData.get('question') as string
+  const name = String(formData.get('name') || '').trim()
+  const email = String(formData.get('email') || '').trim().toLowerCase()
+  const phone = String(formData.get('phone') || '').trim()
+  const question = String(formData.get('question') || '').trim()
+  const honeypot = String(formData.get('website') || '').trim() // simple honeypot
 
-  if (!name || !email || !question) {
-    return { success: false, error: 'Name, email, and question are required.' }
+  // Anti-spam / Honeypot
+  if (honeypot) {
+    // silently reject bot submissions
+    return { success: true }
   }
+
+  // Server-side validations
+  if (!name || name.length > 100) return { success: false, error: 'Please provide a valid name.' }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { success: false, error: 'Please provide a valid email.' }
+  if (!question || question.length > 2000) return { success: false, error: 'Please provide a valid question.' }
+  if (phone && phone.length > 20) return { success: false, error: 'Please provide a valid phone number.' }
 
   try {
     const supabase = await createClient()
-    const { error } = await supabase.from('visitor_questions').insert({
+
+    // Duplicate email protection: Check for exact same question by same email in last 5 minutes
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString()
+    const { data: existingQ } = await supabase
+      .from('visitor_questions')
+      .select('id')
+      .eq('email', email)
+      .eq('question', question)
+      .gte('created_at', fiveMinutesAgo)
+      .maybeSingle()
+
+    if (existingQ) {
+      // Prevent duplicate notification by treating this as a success without re-inserting
+      return { success: true }
+    }
+
+    // Insert to DB as Source of Truth
+    const { data: insertedRecord, error } = await supabase.from('visitor_questions').insert({
       name,
       email,
       phone,
       question,
       status: 'PENDING',
       is_public: false,
-    })
+    }).select('id, created_at').single()
 
-    if (error) {
+    if (error || !insertedRecord) {
       console.error('Error submitting question:', error)
       return { success: false, error: 'Failed to submit question. Please try again.' }
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fluenciel.com'
+    // Email Notification Configuration
+    const notificationEmail = process.env.FAQ_NOTIFICATION_EMAIL
+    const fromEmail = process.env.FAQ_FROM_EMAIL
 
-    // 1. Send Visitor Acknowledgement
-    try {
-      await sendTransactionalEmail({
-        to: email,
-        subject: 'We received your query — Fluenciel Language Academy',
-        text: `Hi ${name},\n\nThank you for contacting Fluenciel Language Academy.\n\nWe have received your query successfully and our team will review it shortly.\n\nYour query:\n${question}\n\nWe’ll get back to you as soon as possible.\n\nRegards,\nFluenciel Language Academy\n\n${siteUrl}`,
-      })
-    } catch (emailErr) {
-      console.error('Failed to send visitor acknowledgement email:', emailErr)
-    }
+    if (notificationEmail && fromEmail) {
+      const submittedDate = new Date(insertedRecord.created_at).toLocaleString()
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://fluenciel.com'
+      const adminLink = `${siteUrl}/dashboard/admin/questions`
+      
+      const htmlContent = `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b;">
+          <h2 style="color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">New Question Received</h2>
+          
+          <div style="margin-top: 24px;">
+            <p style="margin: 4px 0;"><strong>Name:</strong> ${name}</p>
+            <p style="margin: 4px 0;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #4f46e5;">${email}</a></p>
+            ${phone ? `<p style="margin: 4px 0;"><strong>Phone:</strong> ${phone}</p>` : ''}
+          </div>
 
-    // 2. Send Admin Notification
-    const adminInbox = process.env.LEADS_NOTIFY_EMAIL
-    if (adminInbox) {
+          <div style="margin-top: 24px; background-color: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <p style="margin: 0; font-weight: 600; color: #475569; font-size: 14px; text-transform: uppercase;">Question</p>
+            <p style="margin: 8px 0 0 0; white-space: pre-wrap;">${question}</p>
+          </div>
+
+          <div style="margin-top: 24px; font-size: 14px; color: #64748b;">
+            <p style="margin: 4px 0;"><strong>Submitted:</strong> ${submittedDate}</p>
+            <p style="margin: 4px 0;"><strong>Question ID:</strong> ${insertedRecord.id}</p>
+            <p style="margin: 4px 0;"><strong>Status:</strong> PENDING</p>
+          </div>
+
+          <div style="margin-top: 32px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+            <a href="${adminLink}" style="display: inline-block; background-color: #0f172a; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">View in Admin Dashboard</a>
+          </div>
+        </div>
+      `
+
+      const textContent = `
+New Question Received
+
+Name: ${name}
+Email: ${email}
+Phone: ${phone || 'Not provided'}
+
+Question:
+${question}
+
+Submitted: ${submittedDate}
+Question ID: ${insertedRecord.id}
+Status: PENDING
+
+Review in admin dashboard: ${adminLink}
+      `.trim()
+
       try {
         await sendTransactionalEmail({
-          to: adminInbox,
-          subject: 'New FAQ Query — Fluenciel Website',
-          text: `A new question has been submitted through the Fluenciel website.\n\nName: ${name}\nEmail: ${email}\n\nQuestion:\n${question}\n\nSubmitted: ${new Date().toLocaleString()}\n\nPlease review the query in the existing admin workflow.`,
+          to: notificationEmail,
+          from: fromEmail,
+          replyTo: email,
+          subject: 'New FAQ Question — FLUENCIEL',
+          html: htmlContent,
+          text: textContent,
         })
-      } catch (adminEmailErr) {
-        console.error('Failed to send admin notification email:', adminEmailErr)
+      } catch (emailErr) {
+        // Log gracefully so the visitor question remains successfully inserted
+        console.error('Failed to send FAQ admin notification:', emailErr)
       }
     }
 

@@ -1,5 +1,7 @@
 type EmailPayload = {
   to: string | string[]
+  from?: string
+  replyTo?: string
   subject: string
   text: string
   html?: string
@@ -9,20 +11,26 @@ async function sendWithResend(payload: EmailPayload) {
   const key = process.env.RESEND_API_KEY
   if (!key) return { skipped: true as const }
 
-  const from = process.env.EMAIL_FROM || 'Fluenciel <noreply@localhost>'
+  const from = payload.from || process.env.EMAIL_FROM || 'Fluenciel <noreply@localhost>'
+  const bodyData: any = {
+    from,
+    to: payload.to,
+    subject: payload.subject,
+    text: payload.text,
+    html: payload.html ?? `<pre>${payload.text}</pre>`,
+  }
+  
+  if (payload.replyTo) {
+    bodyData.reply_to = payload.replyTo
+  }
+
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${key}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      from,
-      to: payload.to,
-      subject: payload.subject,
-      text: payload.text,
-      html: payload.html ?? `<pre>${payload.text}</pre>`,
-    }),
+    body: JSON.stringify(bodyData),
   })
 
   if (!res.ok) {

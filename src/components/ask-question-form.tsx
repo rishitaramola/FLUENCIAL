@@ -104,6 +104,12 @@ export function AskQuestionForm() {
         />
       </div>
       
+      {/* Honeypot field for anti-spam */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+      
       {errorMsg && (
         <p className="text-xs text-red-600 font-medium">{errorMsg}</p>
       )}
