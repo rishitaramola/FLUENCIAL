@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllCourses } from '@/lib/data/courses'
 import { getAllStudents } from '@/lib/data/students'
@@ -50,7 +50,7 @@ export default async function AdminDashboardPage() {
       bg: 'bg-blue-50',
     },
     {
-      name: 'New Leads',
+      name: 'New Registrations',
       value: newLeads.length,
       subtext: `${leads.length} in pipeline`,
       icon: UserPlus,
@@ -109,14 +109,14 @@ export default async function AdminDashboardPage() {
         })}
       </div>
 
-      {/* 2-column layout: Recent Leads & Recent Payments */}
+      {/* 2-column layout: Recent Registrations & Recent Payments */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {/* Recent Leads */}
+        {/* Recent Registrations */}
         <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
           <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-            <h2 className="text-base font-semibold text-gray-900">Recent Inquiries & Leads</h2>
+            <h2 className="text-base font-semibold text-gray-900">Recent Registrations</h2>
             <Link
-              href="/dashboard/admin/leads"
+              href="/dashboard/admin/registrations"
               className="inline-flex items-center text-xs font-semibold text-indigo-600 hover:text-indigo-500 gap-1"
             >
               View pipeline <ArrowRight className="h-3 w-3" />
@@ -150,7 +150,7 @@ export default async function AdminDashboardPage() {
               </div>
             ))}
             {leads.length === 0 && (
-              <div className="p-8 text-center text-sm text-gray-500">No leads recorded yet.</div>
+              <div className="p-8 text-center text-sm text-gray-500">No registrations recorded yet.</div>
             )}
           </div>
         </div>

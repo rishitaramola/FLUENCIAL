@@ -10,6 +10,7 @@ const NAV: Record<AppRole, { href: string; label: string }[]> = {
     { href: '/dashboard/admin', label: 'Overview' },
     { href: '/dashboard/admin/courses', label: 'Courses' },
     { href: '/dashboard/admin/students', label: 'Students' },
+    { href: '/dashboard/admin/registrations', label: 'Registrations' },
     { href: '/dashboard/admin/leads', label: 'Leads' },
     { href: '/dashboard/admin/teachers', label: 'Teachers' },
     { href: '/dashboard/admin/testimonials', label: 'Success Stories' },
