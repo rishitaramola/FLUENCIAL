@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { logout } from '@/app/(auth)/actions'
 import type { AppRole } from '@/lib/supabase/types'
@@ -57,12 +58,21 @@ export default async function DashboardLayout({
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-xs">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Brand */}
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-indigo-600">Fluenciel</span>
+          <div className="flex items-center gap-3">
+            <Link href="/" className="flex items-center group">
+              <Image
+                src="/images/fluenciel-logo.png"
+                alt="FLUENCIEL Language Studio"
+                width={120}
+                height={120}
+                className="h-6 w-auto object-contain transition-opacity group-hover:opacity-90"
+                priority
+              />
+            </Link>
             <span className="hidden rounded bg-indigo-50 px-1.5 py-0.5 text-xs font-medium text-indigo-700 sm:inline">
               {role}
             </span>
-          </Link>
+          </div>
 
           {/* Nav links */}
           <nav className="hidden items-center gap-1 md:flex">

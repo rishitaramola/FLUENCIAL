@@ -35,15 +35,15 @@ export const metadata: Metadata = {
     description:
       'Structured French learning for communication, study, work, and travel. Book a free demo.',
     url: siteUrl,
-    images: [{ url: '/brand/logo.jpg' }],
+    images: [{ url: '/images/fluenciel-logo.png' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Fluenciel Language Studio',
     description: 'Structured French learning. Book a free demo.',
-    images: ['/brand/logo.jpg'],
+    images: ['/images/fluenciel-logo.png'],
   },
-  icons: { icon: '/brand/logo.jpg', apple: '/brand/logo.jpg' },
+  icons: { icon: '/images/fluenciel-logo.png', apple: '/images/fluenciel-logo.png' },
   robots: { index: true, follow: true },
 }
 
