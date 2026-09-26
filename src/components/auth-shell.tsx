@@ -1,5 +1,5 @@
 import { BrandMark } from '@/components/brand-mark'
-import { EuropeMapBg } from '@/components/europe-map-bg'
+import { EuropeMapBackground } from '@/components/EuropeMapBackground'
 import { BackButton } from '@/components/back-button'
 
 export function AuthShell({ children }: { children: React.ReactNode }) {
@@ -8,7 +8,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
       {/* Left Branding Panel (Hidden on Mobile) */}
       <div className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-navy p-12 lg:flex">
         <div className="absolute inset-0 opacity-20">
-          <EuropeMapBg />
+          <EuropeMapBackground />
         </div>
         
         <div className="relative z-10">
