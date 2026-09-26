@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import crypto from 'crypto'
 import { sendTransactionalEmail } from '@/lib/email'
 
@@ -70,12 +71,12 @@ export async function sendBrochureOtpAction(formData: FormData): Promise<OtpResp
     return { error: 'Please enter a valid past Date of Birth.' }
   }
 
-  const supabase = (await createClient()) as any
+  const supabaseAdmin = createAdminClient() as any
   
   // Rate limit / Cooldown check
   // Find any OTP generated for this email within the last 60 seconds
   const sixtySecondsAgo = new Date(Date.now() - 60 * 1000).toISOString()
-  const { data: recentOtp } = await supabase
+  const { data: recentOtp } = await supabaseAdmin
     .from('brochure_otps')
     .select('id')
     .eq('email', email)
@@ -87,7 +88,7 @@ export async function sendBrochureOtpAction(formData: FormData): Promise<OtpResp
   }
 
   // Invalidate older OTPs (optional but good practice: set attempts to 99 so they fail)
-  await supabase
+  await supabaseAdmin
     .from('brochure_otps')
     .update({ attempts: 99 })
     .eq('email', email)
@@ -99,7 +100,7 @@ export async function sendBrochureOtpAction(formData: FormData): Promise<OtpResp
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString() // 5 minutes
 
   // Store OTP
-  const { error: dbError } = await supabase.from('brochure_otps').insert({
+  const { error: dbError } = await supabaseAdmin.from('brochure_otps').insert({
     email,
     otp_hash: otpHash,
     expires_at: expiresAt,
@@ -107,7 +108,7 @@ export async function sendBrochureOtpAction(formData: FormData): Promise<OtpResp
 
   if (dbError) {
     console.error('Error saving OTP:', dbError.message)
-    return { error: 'Could not generate verification code. Please try again.' }
+    return { error: 'Unable to send the verification code right now. Please try again.' }
   }
 
   // Send Email
@@ -133,10 +134,10 @@ export async function verifyBrochureOtpAction(formData: FormData, otp: string): 
     return { error: 'Incorrect verification code. Please try again.' }
   }
 
-  const supabase = (await createClient()) as any
+  const supabaseAdmin = createAdminClient() as any
   
   // Find the most recent active OTP for this email
-  const { data: otpRecord, error: otpError } = await supabase
+  const { data: otpRecord, error: otpError } = await supabaseAdmin
     .from('brochure_otps')
     .select('*')
     .eq('email', email)
@@ -161,12 +162,12 @@ export async function verifyBrochureOtpAction(formData: FormData, otp: string): 
   
   if (submittedHash !== otpRecord.otp_hash) {
     // Increment attempts
-    await supabase.from('brochure_otps').update({ attempts: otpRecord.attempts + 1 }).eq('id', otpRecord.id)
+    await supabaseAdmin.from('brochure_otps').update({ attempts: otpRecord.attempts + 1 }).eq('id', otpRecord.id)
     return { error: 'Incorrect verification code. Please try again.' }
   }
 
   // Mark as verified
-  await supabase.from('brochure_otps').update({ verified_at: new Date().toISOString() }).eq('id', otpRecord.id)
+  await supabaseAdmin.from('brochure_otps').update({ verified_at: new Date().toISOString() }).eq('id', otpRecord.id)
 
   // -------------------------------------------------------------------------
   // PROCEED WITH EXISTING LEAD CREATION / BROCHURE URL LOGIC
@@ -177,7 +178,7 @@ export async function verifyBrochureOtpAction(formData: FormData, otp: string): 
   const phone = String(formData.get('phone') || '').trim()
 
   try {
-    const { data: existingLead } = await supabase
+    const { data: existingLead } = await supabaseAdmin
       .from('leads')
       .select('id, notes')
       .eq('email', email)
@@ -188,7 +189,7 @@ export async function verifyBrochureOtpAction(formData: FormData, otp: string): 
         ? `${existingLead.notes}\n[System]: Downloaded brochure again on ${new Date().toLocaleDateString()}` 
         : `[System]: Downloaded brochure on ${new Date().toLocaleDateString()}`
         
-      await supabase.from('leads').update({
+      await supabaseAdmin.from('leads').update({
         name,
         phone,
         dob,
@@ -198,7 +199,7 @@ export async function verifyBrochureOtpAction(formData: FormData, otp: string): 
         updated_at: new Date().toISOString()
       }).eq('id', existingLead.id)
     } else {
-      await supabase.from('leads').insert({
+      await supabaseAdmin.from('leads').insert({
         name,
         email,
         phone,
